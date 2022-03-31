@@ -1,0 +1,22 @@
+<p>Lainaamasi Kirjat</p>
+
+<table>
+    <tr>
+      <th>Nimi</th>
+      <th>Kirjan julkaisupaiva</th>
+    </tr>
+    {%for item in books%}
+    <form></form>
+    <tr>
+      <th>{{item[0]}}</th>
+      <th>{{item[1]}}</th>
+    </tr>
+    {%endfor%}
+</table>
+  
+
+
+<form action="/">
+    <input type="submit" value="takaisin">
+</form>
+  

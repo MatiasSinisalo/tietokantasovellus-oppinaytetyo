@@ -111,3 +111,10 @@ def borrow():
     db.session.execute(queryToUpdateBookAmounts, {"bookId":bookId})
     db.session.commit()
     return redirect("/borrowBooks")
+
+@app.route("/borrowinformation")
+def borrowinformation():
+    sql = "SELECT name, publishdate FROM borrows JOIN books ON borrows.book_id = books.id;"
+    result = db.session.execute(sql, {"userId":session["user_id"]})
+    books = result.fetchall()
+    return render_template("borrowinformation.html", books=books)
