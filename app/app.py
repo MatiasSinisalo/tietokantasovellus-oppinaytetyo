@@ -1,17 +1,24 @@
-
+import os
 from json import load
 from dotenv import load_dotenv
-from flask import Flask
+from flask import Flask, url_for
 from flask import redirect, render_template, request, session
 from flask_sqlalchemy import SQLAlchemy
 from os import getenv
 from werkzeug.security import check_password_hash, generate_password_hash
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 load_dotenv()
 app.config["SQLALCHEMY_DATABASE_URI"] = getenv("DATABASE_URL")
 db = SQLAlchemy(app)
 app.secret_key = getenv("SECRET_KEY")
+
+ALLOWED_EXTENSIONS = {'txt'}
+UPLOAD_FOLDER = 'app/static/books'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+
 
 @app.route("/")
 def index():
@@ -74,16 +81,27 @@ def manageBooks():
     books = result.fetchall()
     return render_template("manageBooks.html", count=len(books), books=books)
 
+#help from: https://flask.palletsprojects.com/en/2.0.x/patterns/fileuploads/ for handling file uploads
 @app.route("/manageBooks/addBook", methods=["POST"])
 def addBook():
     name = request.form["name"]
     publishDate = request.form["publishDate"]
     amountFree = request.form["amountFree"]
     amountOverAll = request.form["amountOverall"]
+    
+    content = request.files['content']        
+    filename = content.filename
+    pathToFile = ''
+    if filename.split(".", 1)[1] in ALLOWED_EXTENSIONS:
+        filenameToWrite = secure_filename(filename)
+        pathToFile = os.path.join(app.config['UPLOAD_FOLDER'], filenameToWrite)
+        content.save(pathToFile)
+        
 
-    if name != '' and publishDate != '' and amountFree != '' and amountOverAll != '':
-        sql = "INSERT INTO books (name, publishDate, amount_free, amount_all) VALUES (:name, :publishDate, :amountFree, :amountOverAll)"
-        db.session.execute(sql, {"name":name, "publishDate":publishDate, "amountFree":amountFree, "amountOverAll":amountOverAll})
+
+    if name != '' and publishDate != '' and amountFree != '' and amountOverAll != '' and pathToFile != '':
+        sql = "INSERT INTO books (name, publishDate, amount_free, amount_all, book_path) VALUES (:name, :publishDate, :amountFree, :amountOverAll, :pathToFile)"
+        db.session.execute(sql, {"name":name, "publishDate":publishDate, "amountFree":amountFree, "amountOverAll":amountOverAll, "pathToFile": pathToFile})
         db.session.commit()
     return redirect("/manageBooks")
 

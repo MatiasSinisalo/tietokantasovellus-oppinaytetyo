@@ -3,6 +3,28 @@
 <table>
     <tr>
       <th>Nimi</th>
+      <th>Kirjan julkaisupäivä</th>
+    </tr>
+    {%for item in books%}
+    <form action="/readBook" method="POST">
+        <tr>
+        <th>{{item[1]}}</th>
+        <th>{{item[2]}}</th>
+        <th><input type="submit" value="Lue"></th>
+        <input type="hidden" name="book-id" value="{{item[0]}}" />
+        </tr>
+    </form>
+    {%endfor%}
+</table>
+  
+
+
+
+<p>Palauta Kirjoja</p>
+
+<table>
+    <tr>
+      <th>Nimi</th>
       <th>Kirjan julkaisupaiva</th>
     </tr>
     {%for item in books%}
@@ -17,7 +39,6 @@
     {%endfor%}
 </table>
   
-
 
 <form action="/">
     <input type="submit" value="takaisin">

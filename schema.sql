@@ -13,8 +13,8 @@ CREATE TABLE IF NOT EXISTS Books (
     name varchar(100),
     publishDate varchar(100),
     amount_free int,
-    amount_all int
-    
+    amount_all int,
+    book_path varchar
 );
 
 CREATE TABLE IF NOT EXISTS Borrows(

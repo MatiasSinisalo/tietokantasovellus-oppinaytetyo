@@ -1,6 +1,6 @@
 
 <p>Lisaa Kirja</p>
-<form action="/manageBooks/addBook" method="POST">
+<form action="/manageBooks/addBook" enctype="multipart/form-data" method="POST">
   <label for="name">kirjan nimi</label><br>
   <input id ="name" type="text" name="name" ><br>
 
@@ -12,6 +12,9 @@
 
   <label for="amountOverall">Kaikkien kirjojen määrä</label><br>
   <input id ="amountOverall" type="text" name="amountOverall"><br>
+
+  <label for="content">Sisaltö:</label><br>
+  <input id ="content" type="file" name="content"><br>
 
   <input type="submit" value="Submit">
 
