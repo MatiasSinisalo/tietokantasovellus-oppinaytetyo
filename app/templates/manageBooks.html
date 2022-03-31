@@ -1,0 +1,31 @@
+
+<p>Lisaa Kirja</p>
+<form action="/manageBooks/addBook" method="POST">
+  <label for="name">kirjan nimi</label><br>
+  <input id ="name" type="text" name="name" ><br>
+
+  <label for="publisDate">kirjan julkaisupaiva</label><br>
+  <input id="publisDate" type="text" name="publishDate"><br>
+
+  <label for="amountFree">lainattavissa olevat kirjat</label><br>
+  <input id ="amountFree" type="text" name="amountFree"><br>
+
+  <label for="amountOverall">Kaikkien kirjojen määrä</label><br>
+  <input id ="amountOverall" type="text" name="amountOverall"><br>
+
+  <input type="submit" value="Submit">
+
+</form>
+
+<p>Kirjat tietokannassa:</p>
+kirjojen määrä: {{ count }}
+{%for item in books%}
+<li> {{item}} 
+{%endfor%}</li>
+
+
+<form action="/">
+  <input type="submit" value="takaisin">
+</form>
+
+

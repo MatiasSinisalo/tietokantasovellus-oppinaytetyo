@@ -1,0 +1,32 @@
+>
+
+{% if session.username %}
+<p>Olet kirjautunut nimellä {{ session.username }}</p>
+<form action="/manageBooks">
+  <input type="submit" value="Hallitse Kirjoja">
+</form>
+
+<form action="/borrowBooks">
+  <input type="submit" value="lainaa Kirjoja">
+</form>
+
+
+<a href="/logout">Kirjaudu ulos</a>
+{% else %}
+
+<form action="/login" method="POST">
+<p>Tunnus:<br>
+<input type="text" name="username"></p>
+<p>Salasana:<br>
+<input type="password" name="password"></p>
+<input type="submit" value="Kirjaudu">
+
+</form>
+
+
+<p>Tai</p>
+<form action="/createaccount">
+  <input type="submit" value="luo tili">
+</form>
+
+{% endif %}
