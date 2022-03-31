@@ -6,11 +6,14 @@
       <th>Kirjan julkaisupaiva</th>
     </tr>
     {%for item in books%}
-    <form></form>
-    <tr>
-      <th>{{item[0]}}</th>
-      <th>{{item[1]}}</th>
-    </tr>
+    <form action="/borrowinformation/returnBook" method="POST">
+        <tr>
+        <th>{{item[1]}}</th>
+        <th>{{item[2]}}</th>
+        <th><input type="submit" value="palauta"></th>
+        <input type="hidden" name="book-id" value="{{item[0]}}" />
+        </tr>
+    </form>
     {%endfor%}
 </table>
   

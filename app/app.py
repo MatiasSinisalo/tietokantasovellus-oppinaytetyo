@@ -1,7 +1,4 @@
 
-
-
-
 from json import load
 from dotenv import load_dotenv
 from flask import Flask
@@ -100,6 +97,8 @@ def borrowBooks():
 def borrow():
    
     bookId = request.form["book-id"]
+    if bookId == '':
+         return redirect("/borrowBooks")
     sql = "SELECT COUNT(id) FROM borrows WHERE user_id=:userId AND book_id=:bookId"
     result = db.session.execute(sql, {"userId":session["user_id"], "bookId":bookId})
     maara = result.fetchone()
@@ -112,9 +111,23 @@ def borrow():
     db.session.commit()
     return redirect("/borrowBooks")
 
-@app.route("/borrowinformation")
+@app.route("/borrowinformation/")
 def borrowinformation():
-    sql = "SELECT name, publishdate FROM borrows JOIN books ON borrows.book_id = books.id;"
+    sql = "SELECT books.id, name, publishdate FROM borrows JOIN books ON borrows.book_id = books.id;"
     result = db.session.execute(sql, {"userId":session["user_id"]})
     books = result.fetchall()
     return render_template("borrowinformation.html", books=books)
+
+@app.route("/borrowinformation/returnBook", methods=["POST"])
+def returnBook():
+    bookId = request.form["book-id"]
+    if bookId == '':
+         return redirect("/borrowBooks")
+    
+    queryToUpdateBorrows = "DELETE FROM borrows WHERE user_id=:userId AND book_id=:bookId"
+    queryToUpdateBookAmounts = "UPDATE books SET amount_free = amount_free + 1 WHERE id=:bookId"
+    db.session.execute(queryToUpdateBorrows, {"userId":session["user_id"], "bookId":bookId})
+    db.session.execute(queryToUpdateBookAmounts, {"bookId":bookId})
+    db.session.commit()
+    
+    return redirect("/borrowinformation/")
