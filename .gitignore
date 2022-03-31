@@ -1,0 +1,4 @@
+/app/venv/
+*.pyc
+.env
+.vscode
