@@ -1,4 +1,5 @@
 /app/venv/
+/app/static/books/
 *.pyc
 .env
 .vscode
