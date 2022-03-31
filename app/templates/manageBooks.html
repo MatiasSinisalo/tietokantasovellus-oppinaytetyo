@@ -18,11 +18,24 @@
 </form>
 
 <p>Kirjat tietokannassa:</p>
-kirjojen määrä: {{ count }}
-{%for item in books%}
-<li> {{item}} 
-{%endfor%}</li>
 
+<table>
+  <tr>
+    <th>Nimi</th>
+    <th>Kirjan julkaisupaiva</th>
+    <th>lainattavissa olevat kirjat</th>
+    <th>kaikkien kirjojen maara</th>
+  </tr>
+  {%for item in books%}
+  <form></form>
+  <tr>
+    <th>{{item[1]}}</th>
+    <th>{{item[2]}}</th>
+    <th>{{item[3]}}</th>
+    <th>{{item[4]}}</th>
+  </tr>
+  {%endfor%}
+</table>
 
 <form action="/">
   <input type="submit" value="takaisin">

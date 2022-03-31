@@ -1,6 +1,7 @@
 
 
 
+
 from json import load
 from dotenv import load_dotenv
 from flask import Flask
@@ -34,6 +35,7 @@ def login():
         hash_value = user.password
     if check_password_hash(hash_value, password):
         session["username"] = username
+        session["user_id"] = user.id
         return redirect("/")
     else:
         return redirect("/")
@@ -88,3 +90,24 @@ def addBook():
         db.session.commit()
     return redirect("/manageBooks")
 
+@app.route("/borrowBooks")
+def borrowBooks():
+    result = db.session.execute("SELECT * FROM books")
+    books = result.fetchall()
+    return render_template("borrowBooks.html", books=books)
+
+@app.route("/borrowBooks/borrow", methods=["POST"])
+def borrow():
+   
+    bookId = request.form["book-id"]
+    sql = "SELECT COUNT(id) FROM borrows WHERE user_id=:userId AND book_id=:bookId"
+    result = db.session.execute(sql, {"userId":session["user_id"], "bookId":bookId})
+    maara = result.fetchone()
+    if maara[0] > 0:
+        return redirect("/borrowBooks")
+    queryToUpdateBorrows = "INSERT INTO borrows (user_id, book_id) VALUES (:userId, :bookId)"
+    queryToUpdateBookAmounts = "UPDATE books SET amount_free = amount_free - 1 WHERE id=:bookId"
+    db.session.execute(queryToUpdateBorrows, {"userId":session["user_id"], "bookId":bookId})
+    db.session.execute(queryToUpdateBookAmounts, {"bookId":bookId})
+    db.session.commit()
+    return redirect("/borrowBooks")

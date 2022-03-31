@@ -1,0 +1,36 @@
+
+
+
+<p>Kirjastossa olevat kirjat</p>
+
+<table>
+    <tr>
+      <th>Nimi</th>
+      <th>Kirjan julkaisupaiva</th>
+      <th>lainattavissa olevat kirjat</th>
+      <th>kaikkien kirjojen maara</th>
+      <th>lainaa</th>
+    </tr>
+    
+    {%for item in books%}
+    <form action="/borrowBooks/borrow" method="POST">
+    <tr>
+      <th>{{item[1]}}</th>
+      <th>{{item[2]}}</th>
+      <th>{{item[3]}}</th>
+      <th>{{item[4]}}</th>
+      <th><input type="submit" value="lainaa"></th>
+      <input type="hidden" name="book-id" value="{{item[0]}}" />
+    </tr>
+    </form> 
+    {%endfor%}
+    
+   
+  </table>
+
+
+
+<form action="/">
+    <input type="submit" value="takaisin">
+</form>
+  
