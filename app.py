@@ -14,7 +14,7 @@ import queries
 
 app = Flask(__name__)
 load_dotenv()
-app.config["SQLALCHEMY_DATABASE_URI"] = getenv("DATABASE_URL")
+app.config["SQLALCHEMY_DATABASE_URI"] = getenv("DATABASE_URL_POSTGRES")
 db = SQLAlchemy(app)
 app.secret_key = getenv("SECRET_KEY")
 
