@@ -1,5 +1,5 @@
-/app/venv/
-/app/static/books/
+venv/
+/static/books/testi.txt
 *.pyc
 .env
 .vscode

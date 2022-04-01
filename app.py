@@ -19,7 +19,7 @@ db = SQLAlchemy(app)
 app.secret_key = getenv("SECRET_KEY")
 
 ALLOWED_EXTENSIONS = {'txt'}
-UPLOAD_FOLDER = 'app/static/books'
+UPLOAD_FOLDER = '/static/books'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 
