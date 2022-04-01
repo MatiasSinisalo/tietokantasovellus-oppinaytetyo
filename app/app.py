@@ -1,5 +1,7 @@
+
 import os
 from json import load
+from re import template
 from dotenv import load_dotenv
 from flask import Flask, url_for
 from flask import redirect, render_template, request, session
@@ -149,3 +151,19 @@ def returnBook():
     db.session.commit()
     
     return redirect("/borrowinformation/")
+
+@app.route("/readBook", methods=["POST"])
+def readBook():
+    bookId = request.form["book-id"]
+    if bookId == '':
+        return redirect("/bookinformation")
+    sql = "SELECT books.name, book_path FROM borrows JOIN books ON books.id = borrows.book_id WHERE borrows.user_id =:userId AND borrows.book_id =:bookId"
+    result = db.session.execute(sql, {"userId":session["user_id"], "bookId":bookId})
+    bookData = result.fetchone()
+
+    bookFile = open(bookData.book_path, "r")
+    bookContent = []
+    for rivi in bookFile:
+        bookContent.append(rivi)
+    
+    return render_template("readbook.html", bookName=bookData.name, bookContent=bookContent)
