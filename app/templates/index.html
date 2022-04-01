@@ -1,9 +1,10 @@
 {% if session.username %}
 <p>Olet kirjautunut nimellä {{ session.username }}</p>
+{% if session.is_admin %}
 <form action="/manageBooks">
   <input type="submit" value="Hallitse Kirjoja">
 </form>
-
+{% endif %}
 <form action="/borrowBooks">
   <input type="submit" value="lainaa Kirjoja">
 </form>

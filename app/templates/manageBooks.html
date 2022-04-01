@@ -1,4 +1,4 @@
-
+{%if session.is_admin%}
 <p>Lisaa Kirja</p>
 <form action="/manageBooks/addBook" enctype="multipart/form-data" method="POST">
   <label for="name">kirjan nimi</label><br>
@@ -40,7 +40,7 @@
   {%endfor%}
 </table>
 
-
+{%endif%}
 
 
 

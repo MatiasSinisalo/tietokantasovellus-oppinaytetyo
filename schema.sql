@@ -5,7 +5,8 @@ CREATE TABLE IF NOT EXISTS Users (
     name varchar(100),
     password varchar,
     adress varchar(100),
-    phonenumber varchar(20)
+    phonenumber varchar(20),
+    is_admin boolean DEFAULT FALSE
 );
 
 CREATE TABLE IF NOT EXISTS Books (

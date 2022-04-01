@@ -28,7 +28,7 @@ def addUserToDataBase(username, hash_value, adress, phonenumber):
         return True
 
 def getUser(username):
-    sql = "SELECT id, password FROM users WHERE name=:username"
+    sql = "SELECT id, password, is_admin FROM users WHERE name=:username"
     result = db.session.execute(sql, {"username":username})
     user = result.fetchone()
     return user    

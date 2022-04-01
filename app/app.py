@@ -38,12 +38,13 @@ def login():
     user = queries.getUser(username)
 
     if not user:
-        redirect("/")
+        return redirect("/")
     else:
         hash_value = user.password
     if check_password_hash(hash_value, password):
         session["username"] = username
         session["user_id"] = user.id
+        session["is_admin"] = user.is_admin
         return redirect("/")
     else:
         return redirect("/")
@@ -76,7 +77,9 @@ def addaccount():
 
 @app.route("/manageBooks")
 def manageBooks():
-    books = queries.getAllBooks()
+    books = []
+    if session["is_admin"]:
+        books = queries.getAllBooks()
     return render_template("manageBooks.html", count=len(books), books=books)
 
 #help from: https://flask.palletsprojects.com/en/2.0.x/patterns/fileuploads/ for handling file uploads
