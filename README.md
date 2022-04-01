@@ -2,14 +2,15 @@
 # Kirjastonhallintasovellus  
 
 Sovelluksen toimivat ominaisuudet tällä hetkellä ovat:  
-Käyttäjä:  
-    - Voi lainata kirjan
-    - Voi palauttaa kirjan
-    - Voi lukea kirjan sisällön, jos hän on lainannut kirjan
 
-Ylläpitäjä:
-    - Voi lisätä kirjan
-    - Voi nähdä mitkä kirjat ovat kirjastossa
+Käyttäjä:  
+    - Voi lainata kirjan  
+    - Voi palauttaa kirjan  
+    - Voi lukea kirjan sisällön, jos hän on lainannut kirjan  
+
+Ylläpitäjä:  
+    - Voi lisätä kirjan  
+    - Voi nähdä mitkä kirjat ovat kirjastossa  
 
 
 
