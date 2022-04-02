@@ -61,12 +61,20 @@ def removeBook(id):
 def borrowBook(bookId):
     if bookId == '':
          return False
-  
+    
+    sqlCheckAvailable = "SELECT amount_free from books WHERE id=:bookId"
+    result = db.session.execute(sqlCheckAvailable, {"bookId":bookId})
+    amountFree = result.fetchone()
+    if amountFree.amount_free < 1:
+        return False
+
+    
     sql = "SELECT COUNT(id) FROM borrows WHERE user_id=:userId AND book_id=:bookId"
     result = db.session.execute(sql, {"userId":session["user_id"], "bookId":bookId})
-    maara = result.fetchone()
-    if maara[0] > 0:
+    usersNumberOfBorrows = result.fetchone()
+    if usersNumberOfBorrows.count > 0:
         return False
+    
     queryToUpdateBorrows = "INSERT INTO borrows (user_id, book_id) VALUES (:userId, :bookId)"
     queryToUpdateBookAmounts = "UPDATE books SET amount_free = amount_free - 1 WHERE id=:bookId"
     db.session.execute(queryToUpdateBorrows, {"userId":session["user_id"], "bookId":bookId})
