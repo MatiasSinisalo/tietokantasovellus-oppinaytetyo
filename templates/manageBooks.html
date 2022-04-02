@@ -30,13 +30,16 @@
     <th>kaikkien kirjojen maara</th>
   </tr>
   {%for item in books%}
-  <form></form>
+  <form action="/manageBooks/removeBook" method="POST">
   <tr>
     <th>{{item[1]}}</th>
     <th>{{item[2]}}</th>
     <th>{{item[3]}}</th>
     <th>{{item[4]}}</th>
+    <th><input type="submit" value="poista kirja"></th>
+    <input type="hidden" name="book-id" value="{{item[0]}}" />
   </tr>
+  </form>
   {%endfor%}
 </table>
 

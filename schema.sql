@@ -22,8 +22,8 @@ CREATE TABLE IF NOT EXISTS Borrows(
     id SERIAL PRIMARY KEY,
     user_id integer,
     book_id integer,
-    CONSTRAINT fk_users FOREIGN KEY (user_id) REFERENCES users(id),
-    CONSTRAINT fk_books FOREIGN KEY (book_id) REFERENCES books(id)
+    CONSTRAINT fk_users FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    CONSTRAINT fk_books FOREIGN KEY (book_id) REFERENCES books(id) ON DELETE CASCADE
 );
 
 

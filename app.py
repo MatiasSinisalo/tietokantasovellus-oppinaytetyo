@@ -19,7 +19,7 @@ db = SQLAlchemy(app)
 app.secret_key = getenv("SECRET_KEY")
 
 ALLOWED_EXTENSIONS = {'txt'}
-UPLOAD_FOLDER = '/static/books'
+UPLOAD_FOLDER = 'static/books/'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 
@@ -50,12 +50,12 @@ def login():
         return redirect("/")
 
 
-@app.route("/logout")
+@app.route("/logout/")
 def logout():
     del session["username"]
     return redirect("/")
 
-@app.route("/createaccount")
+@app.route("/createaccount/")
 def createaccount():        
     return render_template("createAccount.html")
 
@@ -75,7 +75,7 @@ def addaccount():
     else:
         return redirect("/")
 
-@app.route("/manageBooks")
+@app.route("/manageBooks/")
 def manageBooks():
     books = []
     if session["is_admin"]:
@@ -103,10 +103,21 @@ def addBook():
     else:
         return redirect("/manageBooks")
    
-  
+@app.route("/manageBooks/removeBook", methods=["POST"])
+def removeBook():
+    bookId = request.form["book-id"]
+    #TODO: error handling
+    if bookId != '':
+        bookFilePathToRemove = queries.removeBook(bookId)
+        if bookFilePathToRemove:
+            if os.path.exists(bookFilePathToRemove):
+                os.remove(bookFilePathToRemove)
+                return redirect("/manageBooks")
+    return redirect("/manageBooks")
+
    
 
-@app.route("/borrowBooks")
+@app.route("/borrowBooks/")
 def borrowBooks():
     books = queries.getAllBooks()
     return render_template("borrowBooks.html", books=books)
@@ -133,7 +144,7 @@ def returnBook():
     bookId = request.form["book-id"]
     #TODO: error handling
     if queries.returnBook(bookId):
-        return redirect("/borrowinformation/")
+        return redirect("/borrowinformation")
     else:
         return redirect("/borrowInformation")
 
