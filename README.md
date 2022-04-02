@@ -13,9 +13,18 @@ Ylläpitäjä:
     - Voi poistaa kirjan  
     - Voi nähdä mitkä kirjat ovat kirjastossa  
 
+-----------------------------
+# herokun testaus  
+Sovellus on nähtävissä herokun osoitteessa  
+https://strawberry-shortcake-58972.herokuapp.com/  
 
+Sovelluksen testaaja voi luoda käyttäjän ja kirjauduttuaan sisään tehdä lainauksia ja palautuksia sekä lukea kirjojen sisältöä,  
+jos kyseinen käyttäjä on lainannut kirjan  
 
+Kirjastossa on testausta varten 3 kirjaa.  
 
+Sivustolla on myös toiminnallinen ylläpitäjä tili, joka voi lisätä kirjoja, poistaa kirjoja, sekä lisätä kirjan sisällön .txt tiedostona.  
+Ota yhteyttä szmatias@ad.helsinki.fi jos tarvitsee testata ylläpitäjän roolin toiminnallisuutta, niin toimitan tunnukset.  
 
 -----------------------------
 Tarkoituksena on luoda verkkopohjainen kirjastonhallintasovellus jossa on kaksi roolia:  
