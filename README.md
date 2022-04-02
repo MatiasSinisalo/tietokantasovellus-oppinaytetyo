@@ -10,6 +10,7 @@ Käyttäjä:
 
 Ylläpitäjä:  
     - Voi lisätä kirjan  
+    - Voi poistaa kirjan
     - Voi nähdä mitkä kirjat ovat kirjastossa  
 
 
