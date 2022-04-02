@@ -53,6 +53,8 @@ def login():
 @app.route("/logout/")
 def logout():
     del session["username"]
+    del session["is_admin"]
+    del session["user_id"]
     return redirect("/")
 
 @app.route("/createaccount/")
@@ -77,88 +79,109 @@ def addaccount():
 
 @app.route("/manageBooks/")
 def manageBooks():
-    books = []
     if session["is_admin"]:
-        books = queries.getAllBooks()
-    return render_template("manageBooks.html", count=len(books), books=books)
+        books = []
+        if session["is_admin"]:
+            books = queries.getAllBooks()
+        return render_template("manageBooks.html", count=len(books), books=books)
+    else:
+        return redirect("/")
 
 #help from: https://flask.palletsprojects.com/en/2.0.x/patterns/fileuploads/ for handling file uploads
 @app.route("/manageBooks/addBook", methods=["POST"])
 def addBook():
-    name = request.form["name"]
-    publishDate = request.form["publishDate"]
-    amountFree = request.form["amountFree"]
-    amountOverAll = request.form["amountOverall"]
-    content = request.files['content']        
-    filename = content.filename
-    pathToFile = ''
-    if filename.split(".", 1)[1] in ALLOWED_EXTENSIONS:
-        filenameToWrite = secure_filename(filename)
-        pathToFile = os.path.join(app.config['UPLOAD_FOLDER'], filenameToWrite)
-        content.save(pathToFile)
-        
-    #TODO: error handling
-    if queries.insertBook(name, publishDate, amountFree, amountOverAll, pathToFile):
-        return redirect("/manageBooks")
+    if session["is_admin"]:
+        name = request.form["name"]
+        publishDate = request.form["publishDate"]
+        amountFree = request.form["amountFree"]
+        amountOverAll = request.form["amountOverall"]
+        content = request.files['content']        
+        filename = content.filename
+        pathToFile = ''
+        if filename.split(".", 1)[1] in ALLOWED_EXTENSIONS:
+            filenameToWrite = secure_filename(filename)
+            pathToFile = os.path.join(app.config['UPLOAD_FOLDER'], filenameToWrite)
+            content.save(pathToFile)
+            
+        #TODO: error handling
+        if queries.insertBook(name, publishDate, amountFree, amountOverAll, pathToFile):
+            return redirect("/manageBooks")
+        else:
+            return redirect("/manageBooks")
     else:
-        return redirect("/manageBooks")
+        return redirect("/")
    
 @app.route("/manageBooks/removeBook", methods=["POST"])
 def removeBook():
-    bookId = request.form["book-id"]
-    #TODO: error handling
-    if bookId != '':
-        bookFilePathToRemove = queries.removeBook(bookId)
-        if bookFilePathToRemove:
-            if os.path.exists(bookFilePathToRemove):
-                os.remove(bookFilePathToRemove)
-                return redirect("/manageBooks")
-    return redirect("/manageBooks")
+    if session["is_admin"]:
+        bookId = request.form["book-id"]
+        #TODO: error handling
+        if bookId != '':
+            bookFilePathToRemove = queries.removeBook(bookId)
+            if bookFilePathToRemove:
+                if os.path.exists(bookFilePathToRemove):
+                    os.remove(bookFilePathToRemove)
+                    return redirect("/manageBooks")
+        return redirect("/manageBooks")
+    return redirect("/")
 
    
 
 @app.route("/borrowBooks/")
 def borrowBooks():
-    books = queries.getAllBooks()
-    return render_template("borrowBooks.html", books=books)
+    if session["username"]:
+        books = queries.getAllBooks()
+        return render_template("borrowBooks.html", books=books)
+    else:
+        return redirect("/")
 
 @app.route("/borrowBooks/borrow", methods=["POST"])
 def borrow():
-   
-    bookId = request.form["book-id"]
-     #TODO: error handling
-    if queries.borrowBook(bookId):
-       return redirect("/borrowBooks")
+    if session["username"]:
+        bookId = request.form["book-id"]
+        #TODO: error handling
+        if queries.borrowBook(bookId):
+            return redirect("/borrowBooks")
+        else:
+            return redirect("/borrowBooks")
     else:
-        return redirect("/borrowBooks")
+        return redirect("/")
 
 @app.route("/borrowinformation/")
 def borrowinformation():
-
-    books = queries.getBooksOfUser()
-    
-    return render_template("borrowinformation.html", books=books)
+    if session["username"]:
+        books = queries.getBooksOfUser()
+        
+        return render_template("borrowinformation.html", books=books)
+    else:
+        return redirect("/")
 
 @app.route("/borrowinformation/returnBook", methods=["POST"])
 def returnBook():
-    bookId = request.form["book-id"]
-    #TODO: error handling
-    if queries.returnBook(bookId):
-        return redirect("/borrowinformation")
+    if session["username"]:
+        bookId = request.form["book-id"]
+        #TODO: error handling
+        if queries.returnBook(bookId):
+            return redirect("/borrowinformation")
+        else:
+            return redirect("/borrowInformation")
     else:
-        return redirect("/borrowInformation")
+        return redirect("/")
 
 @app.route("/readBook", methods=["POST"])
 def readBook():
-    bookId = request.form["book-id"]
-   
-    bookData = queries.getBookReadingData(bookId)
-    #TODO: error handling
-    if bookData:
-        bookFile = open(bookData.book_path, "r")
-        bookContent = []
-        for rivi in bookFile:
-            bookContent.append(rivi)
-        return render_template("readbook.html", bookName=bookData.name, bookContent=bookContent)
+    if session["username"]:
+        bookId = request.form["book-id"]
+    
+        bookData = queries.getBookReadingData(bookId)
+        #TODO: error handling
+        if bookData:
+            bookFile = open(bookData.book_path, "r")
+            bookContent = []
+            for rivi in bookFile:
+                bookContent.append(rivi)
+            return render_template("readbook.html", bookName=bookData.name, bookContent=bookContent)
+        else:
+            return render_template("/borrowInformation")
     else:
-        return render_template("/borrowInformation")
+        return redirect("")
