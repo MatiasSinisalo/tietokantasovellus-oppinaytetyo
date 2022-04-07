@@ -38,11 +38,20 @@ def getAllBooks():
      books = result.fetchall()
      return books
 
-def insertBook(name, publishDate, amountFree, amountOverAll, pathToFile):
+def insertBook(name, publishDate, amountFree, amountOverAll, pathToFile, fileString):
     if name != '' and publishDate != '' and amountFree != '' and amountOverAll != '' and pathToFile != '':
-        sql = "INSERT INTO books (name, publishDate, amount_free, amount_all, book_path) VALUES (:name, :publishDate, :amountFree, :amountOverAll, :pathToFile)"
-        db.session.execute(sql, {"name":name, "publishDate":publishDate, "amountFree":amountFree, "amountOverAll":amountOverAll, "pathToFile": pathToFile})
+        sql = "INSERT INTO books (name, publishDate, amount_free, amount_all, book_path) VALUES (:name, :publishDate, :amountFree, :amountOverAll, :pathToFile) RETURNING id"
+        queryResult = db.session.execute(sql, {"name":name, "publishDate":publishDate, "amountFree":amountFree, "amountOverAll":amountOverAll, "pathToFile": pathToFile})
+        insertedBookId = queryResult.fetchone()[0]
+
+        sqlToInsertBookString = "INSERT INTO bookcontents (content, book_id) VALUES (:fileString, :insertedBookId)"
+        db.session.execute(sqlToInsertBookString, {"fileString":fileString, "insertedBookId":insertedBookId})
         db.session.commit()
+        return True
+    return False
+
+    
+
 
 def removeBook(id):
     if id != '':
@@ -102,7 +111,11 @@ def returnBook(bookId):
 def getBookReadingData(bookId):
     if bookId == '':
         return None
-    sql = "SELECT books.name, book_path FROM borrows JOIN books ON books.id = borrows.book_id WHERE borrows.user_id =:userId AND borrows.book_id =:bookId"
+    sql = "SELECT books.name, book_id FROM borrows JOIN books ON books.id = borrows.book_id WHERE borrows.user_id =:userId AND borrows.book_id =:bookId"
     result = db.session.execute(sql, {"userId":session["user_id"], "bookId":bookId})
     bookData = result.fetchone()
-    return bookData
+    if bookData.book_id != '':
+        sqlToGetBookContent = "SELECT content FROM bookcontents WHERE book_id=:bookId"
+        result = db.session.execute(sqlToGetBookContent, {"bookId":bookData.book_id})
+        bookString = result.fetchone()
+    return (bookData[0], bookString.content)

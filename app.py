@@ -101,13 +101,20 @@ def addBook():
         if filename.split(".", 1)[1] in ALLOWED_EXTENSIONS:
             filenameToWrite = secure_filename(filename)
             pathToFile = os.path.join(app.config['UPLOAD_FOLDER'], filenameToWrite)
+            #save the uploaded file to server disk
             content.save(pathToFile)
-            
-        #TODO: error handling
-        if queries.insertBook(name, publishDate, amountFree, amountOverAll, pathToFile):
-            return redirect("/manageBooks")
-        else:
-            return redirect("/manageBooks")
+            content.close()
+           
+            #Read the file from server disk
+            file = open(pathToFile, "r")
+            bookString = "".join(file.readlines())
+            #TODO: error handling
+            if queries.insertBook(name, publishDate, amountFree, amountOverAll, pathToFile, bookString):
+                file.close()            
+                return redirect("/manageBooks")
+            else:
+                file.close()
+                return redirect("/manageBooks")
     else:
         return redirect("/")
    
@@ -172,16 +179,9 @@ def returnBook():
 def readBook():
     if session["username"]:
         bookId = request.form["book-id"]
-    
         bookData = queries.getBookReadingData(bookId)
         #TODO: error handling
-        if bookData:
-            bookFile = open(bookData.book_path, "r")
-            bookContent = []
-            for rivi in bookFile:
-                bookContent.append(rivi)
-            return render_template("readbook.html", bookName=bookData.name, bookContent=bookContent)
-        else:
-            return render_template("/borrowInformation")
+        return render_template("readbook.html", bookName=bookData[0], bookContent=bookData[1])
+       
     else:
         return redirect("")

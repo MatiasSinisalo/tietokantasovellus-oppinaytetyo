@@ -18,6 +18,13 @@ CREATE TABLE IF NOT EXISTS Books (
     book_path varchar
 );
 
+CREATE TABLE IF NOT EXISTS BookContents(
+    id SERIAL PRIMARY KEY,
+    content varchar,
+    book_id integer,
+    CONSTRAINT fk_books FOREIGN KEY (book_id) REFERENCES books(id) ON DELETE CASCADE
+);
+
 CREATE TABLE IF NOT EXISTS Borrows(
     id SERIAL PRIMARY KEY,
     user_id integer,
