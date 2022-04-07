@@ -11,6 +11,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from werkzeug.utils import secure_filename
 
 import queries
+import filemanager
 
 app = Flask(__name__)
 load_dotenv()
@@ -96,25 +97,16 @@ def addBook():
         amountFree = request.form["amountFree"]
         amountOverAll = request.form["amountOverall"]
         content = request.files['content']        
-        filename = content.filename
-        pathToFile = ''
-        if filename.split(".", 1)[1] in ALLOWED_EXTENSIONS:
-            filenameToWrite = secure_filename(filename)
-            pathToFile = os.path.join(app.config['UPLOAD_FOLDER'], filenameToWrite)
-            #save the uploaded file to server disk
-            content.save(pathToFile)
-            content.close()
-           
-            #Read the file from server disk
-            file = open(pathToFile, "r")
-            bookString = "".join(file.readlines())
-            #TODO: error handling
-            if queries.insertBook(name, publishDate, amountFree, amountOverAll, pathToFile, bookString):
-                file.close()            
+        
+        bookString = filemanager.addAndReturnUploadedFile(content, ALLOWED_EXTENSIONS, UPLOAD_FOLDER)
+        #TODO: error handling
+        if bookString:
+            if queries.insertBook(name, publishDate, amountFree, amountOverAll, "depricated", bookString):           
                 return redirect("/manageBooks")
             else:
-                file.close()
                 return redirect("/manageBooks")
+        else:
+            return redirect("/manageBooks")
     else:
         return redirect("/")
    
@@ -126,13 +118,15 @@ def removeBook():
         if bookId != '':
             bookFilePathToRemove = queries.removeBook(bookId)
             if bookFilePathToRemove:
-                if os.path.exists(bookFilePathToRemove):
-                    os.remove(bookFilePathToRemove)
-                    return redirect("/manageBooks")
+                if bookFilePathToRemove != "depricated":
+                    if os.path.exists(bookFilePathToRemove):
+                        os.remove(bookFilePathToRemove)
+                        return redirect("/manageBooks")
         return redirect("/manageBooks")
     return redirect("/")
 
-   
+
+
 
 @app.route("/borrowBooks/")
 def borrowBooks():
