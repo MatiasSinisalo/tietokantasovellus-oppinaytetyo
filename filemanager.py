@@ -1,7 +1,8 @@
 from werkzeug.utils import secure_filename
 import os
 
-def addAndReturnUploadedFile(content, ALLOWED_EXTENSIONS, UPLOAD_FOLDER):
+#This function creates a temporary file, gets its content and removes the file
+def ReturnUploadedFileContents(content, ALLOWED_EXTENSIONS, UPLOAD_FOLDER):
     filename = content.filename
     pathToFile = ''
     if filename.split(".", 1)[1] in ALLOWED_EXTENSIONS:
@@ -15,7 +16,16 @@ def addAndReturnUploadedFile(content, ALLOWED_EXTENSIONS, UPLOAD_FOLDER):
         file = open(pathToFile, "r")
         bookString = "".join(file.readlines())
         file.close()
+
+        #Remove the file as it is no longer needed
+        removeFile(pathToFile)
         return bookString
     else:
         return False
 
+def removeFile(FilePathToRemove):
+    if FilePathToRemove:
+        if os.path.exists(FilePathToRemove):
+            os.remove(FilePathToRemove)
+            return True
+    return False

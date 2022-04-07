@@ -14,8 +14,7 @@ CREATE TABLE IF NOT EXISTS Books (
     name varchar(100),
     publishDate varchar(100),
     amount_free int,
-    amount_all int,
-    book_path varchar
+    amount_all int
 );
 
 CREATE TABLE IF NOT EXISTS BookContents(

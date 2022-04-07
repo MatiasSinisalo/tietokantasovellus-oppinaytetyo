@@ -38,10 +38,10 @@ def getAllBooks():
      books = result.fetchall()
      return books
 
-def insertBook(name, publishDate, amountFree, amountOverAll, pathToFile, fileString):
-    if name != '' and publishDate != '' and amountFree != '' and amountOverAll != '' and pathToFile != '':
-        sql = "INSERT INTO books (name, publishDate, amount_free, amount_all, book_path) VALUES (:name, :publishDate, :amountFree, :amountOverAll, :pathToFile) RETURNING id"
-        queryResult = db.session.execute(sql, {"name":name, "publishDate":publishDate, "amountFree":amountFree, "amountOverAll":amountOverAll, "pathToFile": pathToFile})
+def insertBook(name, publishDate, amountFree, amountOverAll, fileString):
+    if name != '' and publishDate != '' and amountFree != '' and amountOverAll != '' and fileString != '':
+        sql = "INSERT INTO books (name, publishDate, amount_free, amount_all) VALUES (:name, :publishDate, :amountFree, :amountOverAll) RETURNING id"
+        queryResult = db.session.execute(sql, {"name":name, "publishDate":publishDate, "amountFree":amountFree, "amountOverAll":amountOverAll})
         insertedBookId = queryResult.fetchone()[0]
 
         sqlToInsertBookString = "INSERT INTO bookcontents (content, book_id) VALUES (:fileString, :insertedBookId)"

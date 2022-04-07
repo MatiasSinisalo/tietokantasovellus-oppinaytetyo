@@ -98,10 +98,11 @@ def addBook():
         amountOverAll = request.form["amountOverall"]
         content = request.files['content']        
         
-        bookString = filemanager.addAndReturnUploadedFile(content, ALLOWED_EXTENSIONS, UPLOAD_FOLDER)
+        bookString = filemanager.ReturnUploadedFileContents(content, ALLOWED_EXTENSIONS, UPLOAD_FOLDER)
+        
         #TODO: error handling
         if bookString:
-            if queries.insertBook(name, publishDate, amountFree, amountOverAll, "depricated", bookString):           
+            if queries.insertBook(name, publishDate, amountFree, amountOverAll, bookString):           
                 return redirect("/manageBooks")
             else:
                 return redirect("/manageBooks")
@@ -117,11 +118,6 @@ def removeBook():
         #TODO: error handling
         if bookId != '':
             bookFilePathToRemove = queries.removeBook(bookId)
-            if bookFilePathToRemove:
-                if bookFilePathToRemove != "depricated":
-                    if os.path.exists(bookFilePathToRemove):
-                        os.remove(bookFilePathToRemove)
-                        return redirect("/manageBooks")
         return redirect("/manageBooks")
     return redirect("/")
 
