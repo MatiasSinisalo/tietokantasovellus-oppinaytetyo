@@ -55,16 +55,11 @@ def insertBook(name, publishDate, amountFree, amountOverAll, fileString):
 
 def removeBook(id):
     if id != '':
-        sqlForBookFilePath = "SELECT book_path FROM books WHERE id=:id"
-        result = db.session.execute(sqlForBookFilePath, {"id":id})
-        bookPath = result.fetchone()
-        if bookPath != '':
-            sqlToRemoveTheBook = "DELETE FROM books WHERE id=:id"
-            db.session.execute(sqlToRemoveTheBook, {"id":id})
-            db.session.commit()
-            return bookPath.book_path
-        
-        return False
+        sqlToRemoveTheBook = "DELETE FROM books WHERE id=:id"
+        db.session.execute(sqlToRemoveTheBook, {"id":id})
+        db.session.commit()
+        return True
+    return False
         
 
 def borrowBook(bookId):
