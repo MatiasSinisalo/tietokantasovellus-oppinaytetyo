@@ -136,8 +136,9 @@ def borrowBooks():
 def borrow():
     if session["username"]:
         bookId = request.form["book-id"]
+        borrowDuration = 14 #in the form of days from this day
         #TODO: error handling
-        if queries.borrowBook(bookId):
+        if queries.borrowBook(bookId, borrowDuration):
             return redirect("/borrowBooks")
         else:
             return redirect("/borrowBooks")

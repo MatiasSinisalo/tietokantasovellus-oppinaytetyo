@@ -62,8 +62,8 @@ def removeBook(id):
     return False
         
 
-def borrowBook(bookId):
-    if bookId == '':
+def borrowBook(bookId, borrow_days):
+    if bookId == '' or borrow_days == '':
          return False
     
     sqlCheckAvailable = "SELECT amount_free from books WHERE id=:bookId"
@@ -79,9 +79,9 @@ def borrowBook(bookId):
     if usersNumberOfBorrows.count > 0:
         return False
     
-    queryToUpdateBorrows = "INSERT INTO borrows (user_id, book_id) VALUES (:userId, :bookId)"
+    queryToUpdateBorrows = "INSERT INTO borrows (user_id, book_id, borrow_end_date) VALUES (:userId, :bookId, CURRENT_DATE + :borrow_days)"
     queryToUpdateBookAmounts = "UPDATE books SET amount_free = amount_free - 1 WHERE id=:bookId"
-    db.session.execute(queryToUpdateBorrows, {"userId":session["user_id"], "bookId":bookId})
+    db.session.execute(queryToUpdateBorrows, {"userId":session["user_id"], "bookId":bookId, "borrow_days": borrow_days})
     db.session.execute(queryToUpdateBookAmounts, {"bookId":bookId})
     db.session.commit()
     return True
