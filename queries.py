@@ -100,7 +100,7 @@ def getBooksOfUser():
    
     checkForBorrowsThatEnded(session["user_id"])
    
-    sql = "SELECT books.id, name, publishdate FROM borrows JOIN books ON borrows.book_id = books.id WHERE borrows.user_id=:userId;"
+    sql = "SELECT books.id, books.name, books.publishDate, borrow_date, borrow_end_date FROM borrows JOIN books ON borrows.book_id = books.id WHERE borrows.user_id=:userId;"
     result = db.session.execute(sql, {"userId":session["user_id"]})
     books = result.fetchall()
     return books

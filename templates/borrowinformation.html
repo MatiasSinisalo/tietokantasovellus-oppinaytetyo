@@ -1,3 +1,5 @@
+{% if session.username %}
+<p>Olet kirjautunut nimellä {{ session.username }}</p>
 <p>Lainaamasi Kirjat</p>
 
 <table>
@@ -26,12 +28,16 @@
     <tr>
       <th>Nimi</th>
       <th>Kirjan julkaisupaiva</th>
+      <th>Kirjan lainauspaiva</th>
+      <th>Lainauksen päättymispäivä</th>
     </tr>
     {%for item in books%}
     <form action="/borrowinformation/returnBook" method="POST">
         <tr>
         <th>{{item[1]}}</th>
         <th>{{item[2]}}</th>
+        <th>{{item[3]}}</th>
+        <th>{{item[4]}}</th>
         <th><input type="submit" value="palauta"></th>
         <input type="hidden" name="book-id" value="{{item[0]}}" />
         </tr>
@@ -39,7 +45,7 @@
     {%endfor%}
 </table>
   
-
+{%endif%}
 <form action="/">
     <input type="submit" value="takaisin">
 </form>
