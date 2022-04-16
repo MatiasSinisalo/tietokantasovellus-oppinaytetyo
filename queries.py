@@ -86,7 +86,20 @@ def borrowBook(bookId, borrow_days):
     db.session.commit()
     return True
 
+
+def checkForBorrowsThatEnded(userId):
+    sql = "SELECT book_id FROM borrows WHERE CURRENT_DATE > borrow_end_date AND user_id = :userId"
+    result = db.session.execute(sql, {"userId":userId})
+    bookIdsToBeRemoved = result.fetchall()
+    for bookId in bookIdsToBeRemoved:
+        returnBook(bookId[0])
+    
+
+
 def getBooksOfUser():
+   
+    checkForBorrowsThatEnded(session["user_id"])
+   
     sql = "SELECT books.id, name, publishdate FROM borrows JOIN books ON borrows.book_id = books.id WHERE borrows.user_id=:userId;"
     result = db.session.execute(sql, {"userId":session["user_id"]})
     books = result.fetchall()
