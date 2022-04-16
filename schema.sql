@@ -39,5 +39,5 @@ CREATE TABLE IF NOT EXISTS Authors(
     id SERIAL PRIMARY KEY,
     name varchar(100),
     book_id integer,
-    CONSTRAINT fk_books FOREIGN KEY (book_id) REFERENCES books(id)
+    CONSTRAINT fk_books FOREIGN KEY (book_id) REFERENCES books(id) ON DELETE CASCADE
 );

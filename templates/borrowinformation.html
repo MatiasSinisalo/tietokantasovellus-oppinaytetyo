@@ -10,10 +10,10 @@
     {%for item in books%}
     <form action="/readBook" method="POST">
         <tr>
-        <th>{{item[1]}}</th>
-        <th>{{item[2]}}</th>
+        <th>{{item[0][1]}}</th>
+        <th>{{item[0][1]}}</th>
         <th><input type="submit" value="Lue"></th>
-        <input type="hidden" name="book-id" value="{{item[0]}}" />
+        <input type="hidden" name="book-id" value="{{item[0][0]}}" />
         </tr>
     </form>
     {%endfor%}
@@ -30,16 +30,26 @@
       <th>Kirjan julkaisupaiva</th>
       <th>Kirjan lainauspaiva</th>
       <th>Lainauksen päättymispäivä</th>
+      <th>Kirjailijat</th>
     </tr>
     {%for item in books%}
     <form action="/borrowinformation/returnBook" method="POST">
         <tr>
-        <th>{{item[1]}}</th>
-        <th>{{item[2]}}</th>
-        <th>{{item[3]}}</th>
-        <th>{{item[4]}}</th>
+        <th>{{item[0][1]}}</th>
+        <th>{{item[0][2]}}</th>
+        <th>{{item[0][3]}}</th>
+        <th>{{item[0][4]}}</th>
+        <th>
+            
+            {%for author in item[1]%}
+            <p>{{author[0]}}</p>
+            {%endfor%}
+            
+        </th>
+    
+        
         <th><input type="submit" value="palauta"></th>
-        <input type="hidden" name="book-id" value="{{item[0]}}" />
+        <input type="hidden" name="book-id" value="{{item[0][0]}}" />
         </tr>
     </form>
     {%endfor%}

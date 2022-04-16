@@ -35,9 +35,13 @@ def getUser(username):
     return user    
 
 def getAllBooks():
-     result = db.session.execute("SELECT * FROM books")
-     books = result.fetchall()
-     return books
+    result = db.session.execute("SELECT * FROM books")
+    books = result.fetchall()
+    allBookInformationList = []
+    for book in books:
+        authorsOfBook = getAuthorsOfBook(book[0])
+        allBookInformationList.append((book, authorsOfBook))
+    return allBookInformationList
 
 def insertBook(name, publishDate, amountFree, amountOverAll, fileString):
     if name != '' and publishDate != '' and amountFree != '' and amountOverAll != '' and fileString != '':
@@ -107,7 +111,21 @@ def getBooksOfUser():
     sql = "SELECT books.id, books.name, books.publishDate, borrow_date, borrow_end_date FROM borrows JOIN books ON borrows.book_id = books.id WHERE borrows.user_id=:userId;"
     result = db.session.execute(sql, {"userId":session["user_id"]})
     books = result.fetchall()
-    return books
+    
+    allBookInformationList = []
+    for book in books:
+        authorsOfBook = getAuthorsOfBook(book[0])
+        allBookInformationList.append((book, authorsOfBook))
+
+    return allBookInformationList
+
+def getAuthorsOfBook(bookId):
+    sql = "SELECT name FROM authors WHERE book_id=:bookId"
+    result = db.session.execute(sql, {"bookId":bookId})
+    authorsList = result.fetchall()
+    return authorsList
+
+
 
 def returnBook(bookId):
     if bookId == '':

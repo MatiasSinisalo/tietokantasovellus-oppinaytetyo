@@ -31,16 +31,24 @@
     <th>Kirjan julkaisupaiva</th>
     <th>lainattavissa olevat kirjat</th>
     <th>kaikkien kirjojen maara</th>
+    <th>Kirjailijat</th>
   </tr>
   {%for item in books%}
   <form action="/manageBooks/removeBook" method="POST">
   <tr>
-    <th>{{item[1]}}</th>
-    <th>{{item[2]}}</th>
-    <th>{{item[3]}}</th>
-    <th>{{item[4]}}</th>
+    <th>{{item[0][1]}}</th>
+    <th>{{item[0][2]}}</th>
+    <th>{{item[0][3]}}</th>
+    <th>{{item[0][4]}}</th>
+    <th>
+            
+      {%for author in item[1]%}
+      <p>{{author[0]}}</p>
+      {%endfor%}
+      
+    </th>
     <th><input type="submit" value="poista kirja"></th>
-    <input type="hidden" name="book-id" value="{{item[0]}}" />
+    <input type="hidden" name="book-id" value="{{item[0][0]}}" />
   </tr>
   </form>
   {%endfor%}
