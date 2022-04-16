@@ -96,13 +96,20 @@ def addBook():
         publishDate = request.form["publishDate"]
         amountFree = request.form["amountFree"]
         amountOverAll = request.form["amountOverall"]
+       
+        authorsString = request.form['authors']
+        authorsList = authorsString.split(", ")
+
         content = request.files['content']        
-        
         bookString = filemanager.ReturnUploadedFileContents(content, ALLOWED_EXTENSIONS, UPLOAD_FOLDER)
         
         #TODO: error handling
         if bookString:
-            if queries.insertBook(name, publishDate, amountFree, amountOverAll, bookString):           
+            
+            insertedBookId = queries.insertBook(name, publishDate, amountFree, amountOverAll, bookString)
+            
+            if insertedBookId:
+                queries.addAuthorsToBook(insertedBookId, authorsList)           
                 return redirect("/manageBooks")
             else:
                 return redirect("/manageBooks")

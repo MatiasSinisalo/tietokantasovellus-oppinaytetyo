@@ -3,6 +3,7 @@ from flask import Flask
 from flask import session
 from flask_sqlalchemy import SQLAlchemy
 from os import getenv
+from sqlalchemy import false
 
 
 
@@ -47,12 +48,17 @@ def insertBook(name, publishDate, amountFree, amountOverAll, fileString):
         sqlToInsertBookString = "INSERT INTO bookcontents (content, book_id) VALUES (:fileString, :insertedBookId)"
         db.session.execute(sqlToInsertBookString, {"fileString":fileString, "insertedBookId":insertedBookId})
         db.session.commit()
-        return True
+        return insertedBookId
     return False
 
-    
-
-
+def addAuthorsToBook(book_id, authorsList):
+    if book_id == '' or authorsList == '':
+        return false
+    for author in authorsList:
+        sql = "INSERT INTO authors (name, book_id) VALUES (:author, :book_id)"
+        db.session.execute(sql, {"author":author, "book_id":book_id})
+    db.session.commit()
+                
 def removeBook(id):
     if id != '':
         sqlToRemoveTheBook = "DELETE FROM books WHERE id=:id"
@@ -94,8 +100,6 @@ def checkForBorrowsThatEnded(userId):
     for bookId in bookIdsToBeRemoved:
         returnBook(bookId[0])
     
-
-
 def getBooksOfUser():
    
     checkForBorrowsThatEnded(session["user_id"])
