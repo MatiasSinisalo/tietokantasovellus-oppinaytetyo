@@ -142,15 +142,26 @@ def manageRooms():
 def addRoom():
     if session["is_admin"]:
         roomName = request.form["name"]
-        roomDiscription = request.form["roomDiscription"]
+        roomDescription = request.form["roomDescription"]
         
         #TODO error handling
-        if QueryManager.addRoom(roomName, roomDiscription):
+        if queryManager.addRoom(roomName, roomDescription):
              return redirect("/manageRooms/")
         else:
             return redirect("/manageRooms/")
     else:
         return redirect("/")
+
+@app.route("/manageRooms/removeRoom", methods=["POST"])
+def removeRoom():
+    if session["is_admin"]:
+        roomId = request.form["room-id"]
+
+        #TODO: error handling
+        if queryManager.removeRoom(roomId):
+            return redirect("/manageRooms/")
+        else:
+            return redirect("/manageRooms/")
 
 
 

@@ -1,0 +1,38 @@
+{%if session.is_admin%}
+<p>Lisaa Huone</p>
+<form action="/manageRooms/addRoom" enctype="multipart/form-data" method="POST">
+  <label for="name">huoneen nimi</label><br>
+  <input id ="name" type="text" name="name" ><br>
+  
+  <label for="roomDescription">huoneen kuvaus</label> <br>
+  <input id ="roomDescription" type="text" name="roomDescription" ><br>
+
+  <input type="submit" value="Submit">
+
+</form>
+
+
+<p>Huoneet tietokannassa:</p>
+
+<table>
+  <tr>
+    <th>Nimi</th>
+    <th>kuvaus</th>
+  </tr>
+  {%for item in rooms%}
+  <form action="/manageRooms/removeRoom" method="POST">
+  <tr>
+    <th>{{item[1]}}</th>
+    <th>{{item[2]}}</th>
+    <th><input type="submit" value="poista huone"></th>
+    <input type="hidden" name="room-id" value="{{item[0]}}" />
+  </tr>
+  </form>
+  {%endfor%}
+</table>
+
+
+{%endif%}
+<form action="/">
+  <input type="submit" value="takaisin">
+</form>

@@ -1,9 +1,10 @@
+from unittest import result
 from dotenv import load_dotenv
 from flask import Flask
 from flask import session
 from flask_sqlalchemy import SQLAlchemy
 from os import getenv
-from sqlalchemy import false
+
 
 
 
@@ -59,7 +60,7 @@ class QueryManager:
 
     def addAuthorsToBook(self, book_id, authorsList):
         if book_id == '' or authorsList == '':
-            return false
+            return False
         for author in authorsList:
             sql = "INSERT INTO authors (name, book_id) VALUES (:author, :book_id)"
             self.db.session.execute(sql, {"author":author, "book_id":book_id})
@@ -152,8 +153,25 @@ class QueryManager:
             bookString = result.fetchone()
         return (bookData[0], bookString.content)
 
-    def addRoom(self):
-        return 0
+    def addRoom(self, name, roomDescription):
+        if name == '' or roomDescription == '':
+            return False
+        sql = "INSERT INTO meetingrooms (name, description) VALUES (:name, :roomDescription)"
+        self.db.session.execute(sql, {"name":name, "roomDescription":roomDescription})
+        self.db.session.commit()
+        return True
     
     def getAllRooms(self):
-        return 0
+        sql = "SELECT id, name, description FROM meetingrooms"
+        result = self.db.session.execute(sql)
+        rooms = result.fetchall()
+        return rooms
+    
+    def removeRoom(self, roomId):
+        if roomId == '':
+            return False
+        sql = "DELETE FROM meetingrooms WHERE id = :roomId"
+        self.db.session.execute(sql, {"roomId":roomId})
+        self.db.session.commit()
+        return True
+        
