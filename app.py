@@ -10,7 +10,7 @@ from os import getenv
 from werkzeug.security import check_password_hash, generate_password_hash
 from werkzeug.utils import secure_filename
 
-import queries
+from queries import QueryManager
 import filemanager
 
 app = Flask(__name__)
@@ -23,6 +23,7 @@ ALLOWED_EXTENSIONS = {'txt'}
 UPLOAD_FOLDER = 'static/books/'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
+queryManager = QueryManager(db)
 
 
 @app.route("/")
@@ -36,7 +37,7 @@ def login():
     username = request.form["username"]
     password = request.form["password"]
    
-    user = queries.getUser(username)
+    user = queryManager.getUser(username)
 
     if not user:
         return redirect("/")
@@ -73,7 +74,7 @@ def addaccount():
     hash_value = generate_password_hash(password)
    
     #TODO: error handling
-    if queries.addUserToDataBase(username, hash_value, adress, phonenumber):
+    if queryManager.addUserToDataBase(username, hash_value, adress, phonenumber):
         return redirect("/")
     else:
         return redirect("/")
@@ -83,7 +84,7 @@ def manageBooks():
     if session["is_admin"]:
         books = []
         if session["is_admin"]:
-            books = queries.getAllBooks()
+            books = queryManager.getAllBooks()
         return render_template("manageBooks.html", count=len(books), books=books)
     else:
         return redirect("/")
@@ -106,10 +107,10 @@ def addBook():
         #TODO: error handling
         if bookString:
             
-            insertedBookId = queries.insertBook(name, publishDate, amountFree, amountOverAll, bookString)
+            insertedBookId = queryManager.insertBook(name, publishDate, amountFree, amountOverAll, bookString)
             
             if insertedBookId:
-                queries.addAuthorsToBook(insertedBookId, authorsList)           
+                queryManager.addAuthorsToBook(insertedBookId, authorsList)           
                 return redirect("/manageBooks")
             else:
                 return redirect("/manageBooks")
@@ -124,7 +125,7 @@ def removeBook():
         bookId = request.form["book-id"]
         #TODO: error handling
         if bookId != '':
-            bookFilePathToRemove = queries.removeBook(bookId)
+            bookFilePathToRemove = queryManager.removeBook(bookId)
         return redirect("/manageBooks")
     return redirect("/")
 
@@ -134,7 +135,7 @@ def removeBook():
 @app.route("/borrowBooks/")
 def borrowBooks():
     if session["username"]:
-        books = queries.getAllBooks()
+        books = queryManager.getAllBooks()
         return render_template("borrowBooks.html", books=books)
     else:
         return redirect("/")
@@ -145,7 +146,7 @@ def borrow():
         bookId = request.form["book-id"]
         borrowDuration = 14 #in the form of days from this day
         #TODO: error handling
-        if queries.borrowBook(bookId, borrowDuration):
+        if queryManager.borrowBook(bookId, borrowDuration):
             return redirect("/borrowBooks")
         else:
             return redirect("/borrowBooks")
@@ -155,7 +156,7 @@ def borrow():
 @app.route("/borrowinformation/")
 def borrowinformation():
     if session["username"]:
-        books = queries.getBooksOfUser()
+        books = queryManager.getBooksOfUser()
         
         return render_template("borrowinformation.html", books=books)
     else:
@@ -166,7 +167,7 @@ def returnBook():
     if session["username"]:
         bookId = request.form["book-id"]
         #TODO: error handling
-        if queries.returnBook(bookId):
+        if queryManager.returnBook(bookId):
             return redirect("/borrowinformation")
         else:
             return redirect("/borrowInformation")
@@ -177,7 +178,7 @@ def returnBook():
 def readBook():
     if session["username"]:
         bookId = request.form["book-id"]
-        bookData = queries.getBookReadingData(bookId)
+        bookData = queryManager.getBookReadingData(bookId)
         #TODO: error handling
         return render_template("readbook.html", bookName=bookData[0], bookContent=bookData[1])
        
