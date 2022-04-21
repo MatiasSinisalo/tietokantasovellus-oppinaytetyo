@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS Authors(
 CREATE TABLE IF NOT EXISTS MeetingRooms(
     id SERIAL PRIMARY KEY,
     name varchar(100),
-    kuvaus varchar
+    description varchar
 );
 
 CREATE TABLE IF NOT EXISTS MeetingRoomReserveTimes(
