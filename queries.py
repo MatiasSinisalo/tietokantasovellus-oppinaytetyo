@@ -151,3 +151,9 @@ class QueryManager:
             result = self.db.session.execute(sqlToGetBookContent, {"bookId":bookData.book_id})
             bookString = result.fetchone()
         return (bookData[0], bookString.content)
+
+    def addRoom(self):
+        return 0
+    
+    def getAllRooms(self):
+        return 0

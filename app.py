@@ -1,7 +1,6 @@
 
-import os
-from json import load
-from re import template
+
+
 from dotenv import load_dotenv
 from flask import Flask, url_for
 from flask import redirect, render_template, request, session
@@ -89,6 +88,7 @@ def manageBooks():
     else:
         return redirect("/")
 
+
 #help from: https://flask.palletsprojects.com/en/2.0.x/patterns/fileuploads/ for handling file uploads
 @app.route("/manageBooks/addBook", methods=["POST"])
 def addBook():
@@ -128,6 +128,29 @@ def removeBook():
             bookFilePathToRemove = queryManager.removeBook(bookId)
         return redirect("/manageBooks")
     return redirect("/")
+
+@app.route("/manageRooms/")
+def manageRooms():
+    if session["is_admin"]:
+        rooms = []
+        rooms = queryManager.getAllRooms()
+        return render_template("manageRooms.html", rooms=rooms)
+    else:
+        return redirect("/")
+
+@app.route("/manageRooms/addRoom", methods=["POST"])
+def addRoom():
+    if session["is_admin"]:
+        roomName = request.form["name"]
+        roomDiscription = request.form["roomDiscription"]
+        
+        #TODO error handling
+        if QueryManager.addRoom(roomName, roomDiscription):
+             return redirect("/manageRooms/")
+        else:
+            return redirect("/manageRooms/")
+    else:
+        return redirect("/")
 
 
 

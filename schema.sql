@@ -41,3 +41,18 @@ CREATE TABLE IF NOT EXISTS Authors(
     book_id integer,
     CONSTRAINT fk_books FOREIGN KEY (book_id) REFERENCES books(id) ON DELETE CASCADE
 );
+
+
+CREATE TABLE IF NOT EXISTS MeetingRooms(
+    id SERIAL PRIMARY KEY,
+    name varchar(100),
+    kuvaus varchar
+);
+
+CREATE TABLE IF NOT EXISTS MeetingRoomReserveTimes(
+    id SERIAL PRIMARY KEY,
+    time_block_start TIMESTAMP,
+    time_block_end TIMESTAMP,
+    meeting_room_id integer,
+    CONSTRAINT fk_meeting_rooms FOREIGN KEY (meeting_room_id) REFERENCES MeetingRooms(id) ON DELETE CASCADE
+);
