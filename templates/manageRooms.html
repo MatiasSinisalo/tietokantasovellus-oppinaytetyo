@@ -32,6 +32,33 @@
 </table>
 
 
+<p>Huoneiden varattavat ajat:</p>
+<p>paivamaarat ovat muotoa MI:HH DD-MM-YYYY<p>
+<table>
+  <tr>
+    <th>Huoneen nimi</th>
+    <th>Saatavilla</th>
+    <th>Lisaa uusi aika</th>
+  </tr>
+  {%for item in reservations%}
+  <form action="/manageRooms/addReservation" method="POST">
+  <tr>
+    <th>{{item[1]}}</th>
+    <th></th>
+    <th>
+        <label for="startTime">alkuaika</label>
+        <input id ="startTime" type="text" name="startTime" > <br>
+        <label for="endTime">loppuaika</label>
+        <input id ="endTime" type="text" name="endTime" > <br>
+        <input type="submit" value="lisaa uusi varattava aika">
+    </th>
+    <input type="hidden" name="room-id" value="{{item[0]}}" />
+  </tr>
+  </form>
+  {%endfor%}
+</table>
+
+
 {%endif%}
 <form action="/">
   <input type="submit" value="takaisin">

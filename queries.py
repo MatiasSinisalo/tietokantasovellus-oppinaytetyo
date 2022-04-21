@@ -174,4 +174,17 @@ class QueryManager:
         self.db.session.execute(sql, {"roomId":roomId})
         self.db.session.commit()
         return True
-        
+    
+    def getAllRoomReservations(self):
+        sql  = "SELECT meetingrooms.id, meetingrooms.name, time_block_start, time_block_end FROM meetingrooms LEFT JOIN meetingroomreservetimes ON meetingrooms.id = meetingroomreservetimes.meeting_room_id "
+        result = self.db.session.execute(sql)
+        reservations = result.fetchall()
+        return reservations
+    
+    def addReservationTime(self, time_block_start, time_block_end, roomId):
+        if time_block_start == '' or time_block_end == '' or roomId == '':
+            return False
+        sql = "INSERT INTO meetingRoomReserveTimes (time_block_start, time_block_end, meeting_room_id) VALUES (TO_TIMESTAMP(:time_block_start, 'MI:HH DD-MM-YYYY'), TO_TIMESTAMP(:time_block_end, 'MI:HH DD-MM-YYYY'), :roomId)"
+        self.db.session.execute(sql, {"time_block_start":time_block_start, "time_block_end":time_block_end, "roomId":roomId})
+        self.db.session.commit()
+        return True

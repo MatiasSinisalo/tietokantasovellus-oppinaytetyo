@@ -1,6 +1,7 @@
 
 
 
+
 from dotenv import load_dotenv
 from flask import Flask, url_for
 from flask import redirect, render_template, request, session
@@ -134,7 +135,8 @@ def manageRooms():
     if session["is_admin"]:
         rooms = []
         rooms = queryManager.getAllRooms()
-        return render_template("manageRooms.html", rooms=rooms)
+        reservations = queryManager.getAllRoomReservations()
+        return render_template("manageRooms.html", rooms=rooms, reservations=reservations)
     else:
         return redirect("/")
 
@@ -151,6 +153,33 @@ def addRoom():
             return redirect("/manageRooms/")
     else:
         return redirect("/")
+
+@app.route("/manageRooms/addNewReservationTime", methods=["POST"])
+def addNewReservationTime():
+    if session["is_admin"]:
+        return redirect("/manageRooms/")
+    else:
+        return redirect("/")
+
+
+
+
+@app.route("/manageRooms/addReservation", methods=["POST"])
+def addReservation():
+    if session["is_admin"]:
+        roomId = request.form["room-id"]
+        startTime = request.form["startTime"]
+        endTime = request.form["endTime"]
+        
+
+        #TODO error handling
+        if queryManager.addReservationTime(startTime, endTime, roomId):
+             return redirect("/manageRooms/")
+        else:
+            return redirect("/manageRooms/")
+    else:
+        return redirect("/")
+
 
 @app.route("/manageRooms/removeRoom", methods=["POST"])
 def removeRoom():
