@@ -12,10 +12,10 @@
   {%for item in reservations%}
     <form action="/reserveRooms/makeReservation" method="POST">
         <tr>
-            <th>{{item.name}}</th>
-            <th>{{item.description}}</th>
-            <th>{{item.time_block_start}}</th>
-            <th>{{item.time_block_end}}</th>
+            <th>{{item[1]}}</th>
+            <th>{{item[2]}}</th>
+            <th>{{item[3]}}</th>
+            <th>{{item[4]}}</th>
             <th><input type="submit" value="varaa aika"></th>
             <input type="hidden" name="reservationtime-id" value="{{item[5]}}" />
         </tr>

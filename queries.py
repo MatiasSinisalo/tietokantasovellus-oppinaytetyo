@@ -180,7 +180,7 @@ class QueryManager:
 
 
     def getAllFreeRoomReservations(self):
-        sql  = "SELECT meetingrooms.id, meetingrooms.name, time_block_start, time_block_end, meetingroomreservetimes.id FROM meetingrooms LEFT JOIN meetingroomreservetimes ON meetingrooms.id = meetingroomreservetimes.meeting_room_id WHERE time_block_start IS NOT NULL AND time_block_end IS NOT NULL AND is_reserved IS FALSE"
+        sql  = "SELECT meetingrooms.id, meetingrooms.name, meetingrooms.description, time_block_start, time_block_end, meetingroomreservetimes.id FROM meetingrooms LEFT JOIN meetingroomreservetimes ON meetingrooms.id = meetingroomreservetimes.meeting_room_id WHERE time_block_start IS NOT NULL AND time_block_end IS NOT NULL AND is_reserved IS FALSE"
         result = self.db.session.execute(sql)
         reservations = result.fetchall()
         return reservations
