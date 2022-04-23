@@ -4,14 +4,19 @@
 Sovelluksen toimivat ominaisuudet tällä hetkellä ovat:  
 
 Käyttäjä:  
-    - Voi lainata kirjan  
+    - Voi lainata kirjan 
     - Voi palauttaa kirjan  
-    - Voi lukea kirjan sisällön, jos hän on lainannut kirjan  
+    - Voi lukea kirjan sisällön, jos hän on lainannut kirjan, ja kirjan lainausaika on voimassa.  
+    - Voi varata itselleen työtilan.  
+    - Voi peruuttaa työtilan varauksen.  
 
 Ylläpitäjä:  
     - Voi lisätä kirjan  
     - Voi poistaa kirjan  
     - Voi nähdä mitkä kirjat ovat kirjastossa  
+    - Voi lisätä kirjailijan/kirjailijoita kirjalle kirjan lisäämisen yhteydessä.  
+    - Voi lisätä ja poistaa työtilan  
+    - Voi lisätä ja poistaa työtilalle varattavissa olevan ajan  
 
 -----------------------------
 # herokun testaus  
