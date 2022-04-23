@@ -231,7 +231,7 @@ class QueryManager:
     
     def cancelReservation(self, reservationId):
         if reservationId == '':
-            return false
+            return False
         sqlToUpdateReservations = "DELETE FROM MeetingRoomReservations WHERE id=:reservationId AND user_id=:userId RETURNING meeting_room_reserve_times_id"
         result = self.db.session.execute(sqlToUpdateReservations, {"reservationId":reservationId, "userId":session["user_id"]})
         reservationTimeId = result.fetchone()[0]
