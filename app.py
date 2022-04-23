@@ -197,7 +197,20 @@ def removeRoom():
 @app.route("/reserveRooms")
 def reserveRoom():
     if session["username"]:
-        return render_template("reserveRooms.html")
+        roomInformation = queryManager.getAllRoomInformation()
+        if roomInformation:
+            return render_template("reserveRooms.html", reservations=roomInformation)
+        else:
+            return redirect("/")
+
+@app.route("/reserveRooms/makeReservation", methods=["POST"])
+def makeReservation():
+    if session["username"]:
+        reservationTimeId = request.form["reservationtime-id"]
+        if queryManager.makeReservation(reservationTimeId):
+            return redirect("/reserveRooms")
+        else:
+            return redirect("/reserveRooms")
 
 
 

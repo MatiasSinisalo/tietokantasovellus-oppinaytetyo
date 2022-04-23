@@ -1,0 +1,30 @@
+{%if session.username%}
+
+<p>Huoneiden varattavat ajat:</p>
+<p>paivamaarat ovat muotoa MI:HH DD-MM-YYYY<p>
+<table>
+  <tr>
+    <th>Huoneen nimi</th>
+    <th>Huoneen kuvaus</th>
+    <th>alkaa</th>
+    <th>loppuu</th>
+  </tr>
+  {%for item in reservations%}
+    <form action="/reserveRooms/makeReservation" method="POST">
+        <tr>
+            <th>{{item.name}}</th>
+            <th>{{item.description}}</th>
+            <th>{{item.time_block_start}}</th>
+            <th>{{item.time_block_end}}</th>
+            <th><input type="submit" value="varaa aika"></th>
+            <input type="hidden" name="reservationtime-id" value="{{item[5]}}" />
+        </tr>
+    </form>
+  {%endfor%}
+</table>
+
+
+{%endif%}
+<form action="/">
+  <input type="submit" value="takaisin">
+</form>

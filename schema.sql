@@ -53,6 +53,7 @@ CREATE TABLE IF NOT EXISTS MeetingRoomReserveTimes(
     id SERIAL PRIMARY KEY,
     time_block_start TIMESTAMP,
     time_block_end TIMESTAMP,
+    is_reserved BOOLEAN DEFAULT FALSE,
     meeting_room_id integer,
     CONSTRAINT fk_meeting_rooms FOREIGN KEY (meeting_room_id) REFERENCES MeetingRooms(id) ON DELETE CASCADE
 );
