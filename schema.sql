@@ -63,5 +63,5 @@ CREATE TABLE IF NOT EXISTS MeetingRoomReservations(
     user_id integer,
     meeting_room_reserve_times_id integer,
     CONSTRAINT fk_users FOREIGN KEY (user_id) REFERENCES Users(id) ON DELETE CASCADE,
-    CONSTRAINT fk_meetingRoomReserveTimes FOREIGN KEY (meeting_room_reserve_times_id) REFERENCES MeetingRoomReserveTimes(id) ON DELETE CASCADE,
+    CONSTRAINT fk_meetingRoomReserveTimes FOREIGN KEY (meeting_room_reserve_times_id) REFERENCES MeetingRoomReserveTimes(id) ON DELETE CASCADE
 );

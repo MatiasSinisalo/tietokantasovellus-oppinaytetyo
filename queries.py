@@ -207,8 +207,23 @@ class QueryManager:
         self.db.session.commit()
         return True
 
-    def makeReservation(reservationTimeId):
+    def makeReservation(self, reservationTimeId):
         if reservationTimeId == '':
             return False
         
+        sqlToCheckIfRoomIsFree = "SELECT is_reserved FROM meetingRoomReserveTimes WHERE id=:reservationTimeId"
+        result = self.db.session.execute(sqlToCheckIfRoomIsFree, {"reservationTimeId":reservationTimeId})
+        
+        isReserved = result.fetchone()[0]
+        if isReserved:
+            return False
+        
+        sqlToUpdateIsReservedBool = "UPDATE meetingRoomReserveTimes SET is_reserved = True WHERE id=:reservationTimeId"
+        self.db.session.execute(sqlToUpdateIsReservedBool, {"reservationTimeId":reservationTimeId})
+        
+        sqlToUpdateReservations = "INSERT INTO MeetingRoomReservations (user_id, meeting_room_reserve_times_id) VALUES (:userId, :reservationTimeId)"
+        self.db.session.execute(sqlToUpdateReservations, {"userId":session["user_id"], "reservationTimeId":reservationTimeId})
+        
+        self.db.session.commit()
+
         return True
