@@ -202,7 +202,7 @@ def reserveRoom():
         if roomInformation:
             return render_template("reserveRooms.html", reservations=roomInformation)
         else:
-            return redirect("/")
+            return render_template("reserveRooms.html")
 
 @app.route("/reserveRooms/makeReservation", methods=["POST"])
 def makeReservation():
