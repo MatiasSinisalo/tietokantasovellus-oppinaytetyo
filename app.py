@@ -137,7 +137,11 @@ def manageRooms():
         rooms = []
         rooms = queryManager.getAllRooms()
         reservations = queryManager.getAllRoomReservations()
-        return render_template("manageRooms.html", rooms=rooms, reservations=reservations)
+        filteredReservations = []
+        for reservation in reservations:
+            if reservation.time_block_start != None and reservation.time_block_end != None:
+                filteredReservations.append(reservation)
+        return render_template("manageRooms.html", rooms=rooms, reservations=filteredReservations)
     else:
         return redirect("/")
 
