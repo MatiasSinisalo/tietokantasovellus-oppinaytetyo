@@ -198,7 +198,7 @@ def removeRoom():
 @app.route("/reserveRooms")
 def reserveRoom():
     if session["username"]:
-        roomInformation = queryManager.getAllRoomInformation()
+        roomInformation = queryManager.getAllFreeRoomReservations()
         if roomInformation:
             return render_template("reserveRooms.html", reservations=roomInformation)
         else:
