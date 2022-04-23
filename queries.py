@@ -51,7 +51,7 @@ class QueryManager:
             sql = "INSERT INTO books (name, publishDate, amount_free, amount_all) VALUES (:name, :publishDate, :amountFree, :amountOverAll) RETURNING id"
             queryResult = self.db.session.execute(sql, {"name":name, "publishDate":publishDate, "amountFree":amountFree, "amountOverAll":amountOverAll})
             insertedBookId = queryResult.fetchone()[0]
-
+            
             sqlToInsertBookString = "INSERT INTO bookcontents (content, book_id) VALUES (:fileString, :insertedBookId)"
             self.db.session.execute(sqlToInsertBookString, {"fileString":fileString, "insertedBookId":insertedBookId})
             self.db.session.commit()
@@ -167,6 +167,19 @@ class QueryManager:
         rooms = result.fetchall()
         return rooms
     
+    def getAllRoomReservations(self):
+        sql  = "SELECT meetingrooms.id, meetingrooms.name, time_block_start, time_block_end, meetingroomreservetimes.id FROM meetingrooms LEFT JOIN meetingroomreservetimes ON meetingrooms.id = meetingroomreservetimes.meeting_room_id WHERE time_block_start IS NOT NULL AND time_block_end IS NOT NULL"
+        result = self.db.session.execute(sql)
+        reservations = result.fetchall()
+        return reservations
+
+    def getAllRoomInformation(self):
+        sql  = "SELECT meetingrooms.id, meetingrooms.name, meetingrooms.description, time_block_start, time_block_end, meetingroomreservetimes.id FROM meetingrooms LEFT JOIN meetingroomreservetimes ON meetingrooms.id = meetingroomreservetimes.meeting_room_id WHERE time_block_start IS NOT NULL AND time_block_end IS NOT NULL"
+        result = self.db.session.execute(sql)
+        information = result.fetchall()
+        return information
+
+
     def removeRoom(self, roomId):
         if roomId == '':
             return False
@@ -175,11 +188,7 @@ class QueryManager:
         self.db.session.commit()
         return True
     
-    def getAllRoomReservations(self):
-        sql  = "SELECT meetingrooms.id, meetingrooms.name, time_block_start, time_block_end, meetingroomreservetimes.id FROM meetingrooms LEFT JOIN meetingroomreservetimes ON meetingrooms.id = meetingroomreservetimes.meeting_room_id"
-        result = self.db.session.execute(sql)
-        reservations = result.fetchall()
-        return reservations
+  
     
     def addReservationTime(self, time_block_start, time_block_end, roomId):
         if time_block_start == '' or time_block_end == '' or roomId == '':
