@@ -20,8 +20,9 @@ Ylläpitäjä:
 
 -----------------------------
 # herokun testaus  
+sovellus on saatavilla osoitteessa:  
+https://strawberry-shortcake-58972.herokuapp.com/  
 
-Sovellus on kehityksen alla toistaiseksi, eikä se ole saatavilla herokussa
 
 -----------------------------
 Tarkoituksena on luoda verkkopohjainen kirjastonhallintasovellus jossa on kaksi roolia:  
