@@ -33,8 +33,12 @@ queryManager = QueryManager(db)
 def index():
    # result = db.session.execute("SELECT * FROM users")
    # users = result.fetchall()
-    message = session["message"]
-    session["message"] = None
+    if "message" in session:
+        message = session["message"]
+        session["message"] = None
+    else:
+        session["message"] = None
+        message = session["message"] 
     return render_template("index.html", message=message) 
 
 @app.route("/login", methods=["POST"])
