@@ -1,9 +1,10 @@
-from unittest import result
+
 from dotenv import load_dotenv
 from flask import Flask
 from flask import session
 from flask_sqlalchemy import SQLAlchemy
-from os import getenv
+
+
 
 
 
@@ -228,6 +229,17 @@ class QueryManager:
 
         return True
     
+    def cancelReservation(self, reservationId):
+        if reservationId == '':
+            return false
+        sqlToUpdateReservations = "DELETE FROM MeetingRoomReservations WHERE id=:reservationId AND user_id=:userId RETURNING meeting_room_reserve_times_id"
+        result = self.db.session.execute(sqlToUpdateReservations, {"reservationId":reservationId, "userId":session["user_id"]})
+        reservationTimeId = result.fetchone()[0]
+        if reservationTimeId != None:
+           sqlToUpdateReservationTimes = "UPDATE meetingRoomReserveTimes SET is_reserved = False WHERE id=:reservationTimeId"
+           self.db.session.execute(sqlToUpdateReservationTimes, {"reservationTimeId":reservationTimeId})
+           self.db.session.commit()
+
     def getUsersAllReservedRooms(self):
         sql = "SELECT mr.id id, m.name name, m.description description, mt.time_block_start start, mt.time_block_end end FROM meetingRoomReservations mr JOIN meetingRoomReserveTimes mt ON mr.meeting_room_reserve_times_id = mt.id JOIN MeetingRooms m ON m.id = mt.meeting_room_id WHERE mr.user_id = :userId"
         result = self.db.session.execute(sql, {"userId":session["user_id"]})

@@ -220,11 +220,15 @@ def reserveRoomInformation():
         if reservedRooms:
             return render_template("reservedRoomsInformation.html", reservedRooms=reservedRooms)
         else:
-            return redirect("/")
+            return render_template("reservedRoomsInformation.html")
 
 @app.route("/reservedRoomsInformation/cancelReservation", methods=["POST"])
 def cancelReservation():
-    reservationid = request.form["reservation-id"]
+    if session["username"]:
+        reservationid = request.form["reservation-id"]
+        queryManager.cancelReservation(reservationid)
+
+
     return redirect("/reservedRoomsInformation")
 
 
