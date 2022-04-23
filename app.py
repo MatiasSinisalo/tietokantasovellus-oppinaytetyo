@@ -45,6 +45,7 @@ def login():
     user = queryManager.getUser(username)
 
     if not user:
+        session["message"] = "Väärä käyttäjänimi tai salansana"
         return redirect("/")
     else:
         hash_value = user.password
@@ -54,6 +55,7 @@ def login():
         session["is_admin"] = user.is_admin
         return redirect("/")
     else:
+        session["message"] = "Väärä käyttäjänimi tai salansana"
         return redirect("/")
 
 
@@ -75,9 +77,7 @@ def addaccount():
     password = request.form["password"]
     adress = request.form["adress"]
     phonenumber = request.form["phonenumber"]
-   
     hash_value = generate_password_hash(password)
-   
     if queryManager.addUserToDataBase(username, hash_value, adress, phonenumber):
         session["message"] = "Luotiing käyttäjä onnistuneesti!"
         return redirect("/")
