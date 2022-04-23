@@ -1,0 +1,25 @@
+{%if session.username%}
+<table>
+    <tr>
+      <th>Nimi</th>
+      <th>Kuvaus</th>
+      <th>varauksen alku</th>
+      <th>varauksen loppu</th>
+    </tr>
+    {%for item in reservedRooms%}
+    <form action="/reservedRoomsInformation/cancelReservation" method="POST">
+    <tr>
+      <th>{{item.name}}</th>
+      <th>{{item.description}}</th>
+      <th>{{item.start}}</th>
+      <th>{{item.end}}</th>
+      <th><input type="submit" value="peru varaus"></th>
+      <input type="hidden" name="reservation-id" value="{{item.id}}" />
+    </tr>
+    </form>
+    {%endfor%}
+</table>
+{%endif%}
+<form action="/">
+    <input type="submit" value="takaisin">
+</form>

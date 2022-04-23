@@ -227,3 +227,10 @@ class QueryManager:
         self.db.session.commit()
 
         return True
+    
+    def getUsersAllReservedRooms(self):
+        sql = "SELECT mr.id id, m.name name, m.description description, mt.time_block_start start, mt.time_block_end end FROM meetingRoomReservations mr JOIN meetingRoomReserveTimes mt ON mr.meeting_room_reserve_times_id = mt.id JOIN MeetingRooms m ON m.id = mt.meeting_room_id WHERE mr.user_id = :userId"
+        result = self.db.session.execute(sql, {"userId":session["user_id"]})
+        reservationInfo = result.fetchall()
+        return reservationInfo
+       

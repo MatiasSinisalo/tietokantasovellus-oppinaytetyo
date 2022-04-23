@@ -3,6 +3,7 @@
 
 
 
+
 from dotenv import load_dotenv
 from flask import Flask, url_for
 from flask import redirect, render_template, request, session
@@ -211,6 +212,20 @@ def makeReservation():
             return redirect("/reserveRooms")
         else:
             return redirect("/reserveRooms")
+
+@app.route("/reservedRoomsInformation")
+def reserveRoomInformation():
+    if session["username"]:
+        reservedRooms = queryManager.getUsersAllReservedRooms()
+        if reservedRooms:
+            return render_template("reservedRoomsInformation.html", reservedRooms=reservedRooms)
+        else:
+            return redirect("/")
+
+@app.route("/reservedRoomsInformation/cancelReservation", methods=["POST"])
+def cancelReservation():
+    reservationid = request.form["reservation-id"]
+    return redirect("/reservedRoomsInformation")
 
 
 
