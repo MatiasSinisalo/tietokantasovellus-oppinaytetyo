@@ -1,3 +1,7 @@
+{%if message != None%}
+<p>{{message}}</p>
+{%endif%}
+
 {% if session.username %}
 <p>Olet kirjautunut nimellä {{ session.username }}</p>
 {% if session.is_admin %}

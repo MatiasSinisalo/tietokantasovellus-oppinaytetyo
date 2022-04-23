@@ -4,6 +4,7 @@
 
 
 
+
 from dotenv import load_dotenv
 from flask import Flask, url_for
 from flask import redirect, render_template, request, session
@@ -32,7 +33,9 @@ queryManager = QueryManager(db)
 def index():
    # result = db.session.execute("SELECT * FROM users")
    # users = result.fetchall()
-    return render_template("index.html") 
+    message = session["message"]
+    session["message"] = None
+    return render_template("index.html", message=message) 
 
 @app.route("/login", methods=["POST"])
 def login():
@@ -75,8 +78,8 @@ def addaccount():
    
     hash_value = generate_password_hash(password)
    
-    #TODO: error handling
     if queryManager.addUserToDataBase(username, hash_value, adress, phonenumber):
+        session["message"] = "Luotiing käyttäjä onnistuneesti!"
         return redirect("/")
     else:
         return redirect("/")

@@ -20,17 +20,21 @@ class QueryManager:
         
         
     def addUserToDataBase(self, username, hash_value, adress, phonenumber):
-        if username != '' and hash_value != '' and adress != '' and phonenumber != '':
+        if username != '' and hash_value != '':
             sql = "SELECT COUNT(id) FROM users WHERE name=:username"
             result = self.db.session.execute(sql, {"username":username})
             usersWithSameName = result.fetchone()    
             if usersWithSameName[0] > 0:
+                session["message"] = "Virhe tiliä luodessa: käyttäjä on jo olemassa"
                 return False
 
             sql = "INSERT INTO users (name, password, adress, phonenumber) VALUES (:username, :password, :adress, :phonenumber)"
             self.db.session.execute(sql, {"username":username, "password":hash_value, "adress":adress, "phonenumber":phonenumber})
             self.db.session.commit()
             return True
+        else:
+            session["message"] = "Virhe tiliä luodessa: salasana tai käyttäjänimi puuttuu"
+            return False
 
     def getUser(self, username):
         sql = "SELECT id, password, is_admin FROM users WHERE name=:username"

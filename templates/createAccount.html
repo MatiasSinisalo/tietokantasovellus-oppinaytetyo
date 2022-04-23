@@ -1,11 +1,15 @@
-
+<head>
+  <script type="text/javascript" src="{{url_for('static', filename='javascript/create_account_form_validations.js')}}"></script>
+</head>
+<body>
 <p>luo tili</p>
-<form action="/createaccount/addaccount" method="POST">
-  <label for="usermame">Kayttajan nimi</label><br>
+<p>* = pakollinen kenttä</p>
+<form name="createAccountForm" onsubmit="return validate_account_form(this)" action="/createaccount/addaccount" method="POST">
+  <label for="usermame">Kayttajan nimi*</label><br>
   <input id ="username" type="text" name="username" ><br>
 
-  <label for="Password">Kayttajan Salasana</label><br>
-  <input id="Password" type="text" name="password"><br>
+  <label for="Password">Kayttajan Salasana*</label><br>
+  <input id="Password" type="password" name="password"><br>
 
   <label for="adress">Kotiosoite</label><br>
   <input id="adress" type="text" name="adress"><br>
@@ -23,4 +27,5 @@
   <input type="submit" value="takaisin">
 </form>
 
+</body>
 

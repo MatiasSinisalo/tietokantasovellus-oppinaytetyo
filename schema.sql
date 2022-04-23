@@ -4,8 +4,8 @@ CREATE TABLE IF NOT EXISTS Users (
     id SERIAL PRIMARY KEY,
     name varchar(100),
     password varchar,
-    adress varchar(100),
-    phonenumber varchar(20),
+    adress varchar(100) DEFAULT NULL,
+    phonenumber varchar(20) DEFAULT NULL,
     is_admin boolean DEFAULT FALSE
 );
 
