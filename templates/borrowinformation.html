@@ -2,8 +2,7 @@
 
 {%block content%}
 
-{% if session.username %}
-<p>Olet kirjautunut nimellä {{ session.username }}</p>
+
 <p>Lainaamasi Kirjat</p>
 
 <table>
@@ -61,7 +60,7 @@
     {%endfor%}
 </table>
   
-{%endif%}
+
 <form action="/">
     <input type="submit" value="takaisin">
 </form>
