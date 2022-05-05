@@ -1,3 +1,9 @@
+
+{%extends 'base.html'%}
+
+{%block content%}
+
+
 {%if session.username%}
 
 <p>Huoneiden varattavat ajat:</p>
@@ -29,3 +35,4 @@
 <form action="/">
   <input type="submit" value="takaisin">
 </form>
+{%endblock%}

@@ -1,0 +1,85 @@
+
+body{
+    min-width: 100%;
+    min-height: 100%;
+}
+
+.login-form{
+
+    background-color: lightsteelblue;
+    width: auto;
+    
+    
+}
+
+.maingrid{
+    display: grid;
+    grid-template-columns: 100vw;
+    grid-template-rows: auto;
+    grid-template-areas:
+        "nav"
+        "content"
+        "footer";
+}
+
+.login-grid{
+    display: grid;
+    grid-template-columns: 33vw 33vw 33vw;
+    grid-template-rows: 33vh 33vh 33vh;
+    grid-template-areas:
+        "top top top"
+        "left center right"
+        "bottom bottom bottom";
+}
+
+.center-item{
+    grid-area: ccenter;
+
+}
+
+.footer{
+    grid-area: footer
+}
+
+.login-form-container{
+    background-color: chocolate;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+    border-radius: 5%;
+}
+
+.simple-form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    flex-wrap: wrap;
+    background-color: whitesmoke;
+    padding: 10px;
+    border-radius: 25%;
+}
+
+.nav-bar{
+    grid-area: nav;
+    background-color: burlywood;
+    display: flex;
+    grid-area: nav;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+
+}
+
+.content{
+    grid-area: content;
+    min-height: 50vh;
+   
+
+
+}

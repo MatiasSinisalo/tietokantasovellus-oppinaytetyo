@@ -1,3 +1,7 @@
+{%extends 'base.html'%}
+
+{%block content%}
+
 {%if session.is_admin%}
 <p>Lisaa Kirja</p>
 <form action="/manageBooks/addBook" enctype="multipart/form-data" method="POST">
@@ -58,8 +62,9 @@
 
 {%endif%}
 
-
-
 <form action="/">
   <input type="submit" value="takaisin">
 </form>
+{%endblock%}
+
+

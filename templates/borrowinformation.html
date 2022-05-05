@@ -1,3 +1,7 @@
+{%extends 'base.html'%}
+
+{%block content%}
+
 {% if session.username %}
 <p>Olet kirjautunut nimellä {{ session.username }}</p>
 <p>Lainaamasi Kirjat</p>
@@ -61,4 +65,4 @@
 <form action="/">
     <input type="submit" value="takaisin">
 </form>
-  
+{%endblock%}

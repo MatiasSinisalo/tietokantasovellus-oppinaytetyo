@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<head>
+  <script type="text/javascript" src="{{url_for('static', filename='javascript/acount_form_validation.js')}}"></script>
+  <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}"></style>
+
+</head>
+<body>
+{%if message != None%}
+<p>{{message}}</p>
+{%endif%}
+
+{% if session.username %}
+
+<div class="maingrid">
+  
+
+<div class="nav-bar">
+  <p>Olet kirjautunut nimellä {{ session.username }}</p>
+  {% if session.is_admin %}
+
+            <form action="/manageBooks">
+              <input type="submit" value="Hallitse Kirjoja">
+            </form>
+
+            <br>
+
+            <form action="/manageRooms">
+              <input type="submit" value="Hallitse Huoneita">
+            </form>
+
+            <br>
+
+      {% endif %}
+      
+      <form action="/borrowBooks">
+        <input type="submit" value="lainaa Kirjoja">
+      </form>
+
+      <br>
+
+      <form action="/borrowinformation">
+        <input type="submit" value="Tarkastele lainaamiasi kirjoja">
+      </form>
+
+      <br>
+
+      <form action="/reserveRooms">
+        <input type="submit" value="tee varaus työhuoneelle">
+      </form>
+
+      <br>
+
+      <form action="/reservedRoomsInformation">
+        <input type="submit" value="tarkastele varaamiasi huoneita">
+      </form>
+</div>
+
+<div class="content">{%block content%}{%endblock%}</div>
+
+
+
+</div>
+
+<div class="footer">
+
+    <a href="/logout">Kirjaudu ulos</a>
+  
+  </div>
+{% else %}
+
+<div class="login-grid">
+
+  <div class="center-item login-form-container">
+    <form class="simple-form" action="/login" method="POST" onsubmit="return validate_account_form(this)">
+    <p>käyttäjänimi:<br>
+    <input type="text" name="username"></p>
+    <p>Salasana:<br>
+    <input type="password" name="password"></p>
+    <input type="submit" value="Kirjaudu">
+
+    </form>
+
+
+    <p>Tai</p>
+    <form action="/createaccount">
+      <input type="submit" value="luo tili">
+    </form>
+  </div>
+</div>
+{% endif %}
+</body>
