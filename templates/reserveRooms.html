@@ -18,6 +18,7 @@
             <th>{{item[4]}}</th>
             <th><input type="submit" value="varaa aika"></th>
             <input type="hidden" name="reservationtime-id" value="{{item[5]}}" />
+            <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
         </tr>
     </form>
   {%endfor%}

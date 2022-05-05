@@ -8,6 +8,7 @@
   <input id ="roomDescription" type="text" name="roomDescription" ><br>
 
   <input type="submit" value="Submit">
+  <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
 
 </form>
 
@@ -26,6 +27,7 @@
     <th>{{item[2]}}</th>
     <th><input type="submit" value="poista huone"></th>
     <input type="hidden" name="room-id" value="{{item[0]}}" />
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
   </tr>
   </form>
   {%endfor%}
@@ -49,6 +51,7 @@
       </th>
       <th><input type="submit" value="lisaa uusi varattava aika"></th>
       <input type="hidden" name="room-id" value="{{item[0]}}" />
+      <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
     </tr>
     </form>
     {%endfor%}
@@ -70,6 +73,7 @@
             <th>{{item[3]}}</th>
             <th><input type="submit" value="poista varattava aika"></th>
             <input type="hidden" name="room-id" value="{{item[4]}}" />
+            <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
         </tr>
     </form>
   {%endfor%}

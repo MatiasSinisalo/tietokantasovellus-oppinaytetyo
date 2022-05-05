@@ -14,6 +14,7 @@
         <th>{{item[0][1]}}</th>
         <th><input type="submit" value="Lue"></th>
         <input type="hidden" name="book-id" value="{{item[0][0]}}" />
+        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
         </tr>
     </form>
     {%endfor%}
@@ -50,6 +51,7 @@
         
         <th><input type="submit" value="palauta"></th>
         <input type="hidden" name="book-id" value="{{item[0][0]}}" />
+        <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
         </tr>
     </form>
     {%endfor%}

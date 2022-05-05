@@ -19,6 +19,7 @@
   <label for="content">Sisaltö:</label><br>
   <input id ="content" type="file" name="content"><br>
 
+  <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
   <input type="submit" value="Submit">
 
 </form>
@@ -49,6 +50,7 @@
     </th>
     <th><input type="submit" value="poista kirja"></th>
     <input type="hidden" name="book-id" value="{{item[0][0]}}" />
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
   </tr>
   </form>
   {%endfor%}

@@ -5,8 +5,9 @@
 
 
 
+import secrets
 from dotenv import load_dotenv
-from flask import Flask, url_for
+from flask import Flask, abort, url_for
 from flask import redirect, render_template, request, session
 from flask_sqlalchemy import SQLAlchemy
 from os import getenv
@@ -57,6 +58,7 @@ def login():
         session["username"] = username
         session["user_id"] = user.id
         session["is_admin"] = user.is_admin
+        session["csrf_token"] = secrets.token_hex(16)
         return redirect("/")
     else:
         session["message"] = "Väärä käyttäjänimi tai salansana"
@@ -68,6 +70,7 @@ def logout():
     del session["username"]
     del session["is_admin"]
     del session["user_id"]
+    del session["csrf_token"]
     return redirect("/")
 
 @app.route("/createaccount/")
@@ -103,6 +106,8 @@ def manageBooks():
 @app.route("/manageBooks/addBook", methods=["POST"])
 def addBook():
     if session["is_admin"]:
+        if session["csrf_token"] != request.form["csrf_token"]:
+            abort(403)
         name = request.form["name"]
         publishDate = request.form["publishDate"]
         amountFree = request.form["amountFree"]
@@ -132,6 +137,8 @@ def addBook():
 @app.route("/manageBooks/removeBook", methods=["POST"])
 def removeBook():
     if session["is_admin"]:
+        if session["csrf_token"] != request.form["csrf_token"]:
+            abort(403)
         bookId = request.form["book-id"]
         #TODO: error handling
         if bookId != '':
@@ -142,6 +149,7 @@ def removeBook():
 @app.route("/manageRooms/")
 def manageRooms():
     if session["is_admin"]:
+        
         rooms = []
         rooms = queryManager.getAllRooms()
         reservations = queryManager.getAllRoomReservations()
@@ -152,6 +160,8 @@ def manageRooms():
 @app.route("/manageRooms/addRoom", methods=["POST"])
 def addRoom():
     if session["is_admin"]:
+        if session["csrf_token"] != request.form["csrf_token"]:
+            abort(403)
         roomName = request.form["name"]
         roomDescription = request.form["roomDescription"]
         
@@ -166,6 +176,8 @@ def addRoom():
 @app.route("/manageRooms/addReservation", methods=["POST"])
 def addReservation():
     if session["is_admin"]:
+        if session["csrf_token"] != request.form["csrf_token"]:
+            abort(403)
         roomId = request.form["room-id"]
         startTime = request.form["startTime"]
         endTime = request.form["endTime"]
@@ -182,6 +194,8 @@ def addReservation():
 @app.route("/manageRooms/removeReservationTime", methods=["POST"])
 def removeReservationTime():
     if session["is_admin"]:
+        if session["csrf_token"] != request.form["csrf_token"]:
+            abort(403)
         roomId = request.form["room-id"]
         #TODO error handling
         if queryManager.removeReservationTime(roomId):
@@ -194,6 +208,8 @@ def removeReservationTime():
 @app.route("/manageRooms/removeRoom", methods=["POST"])
 def removeRoom():
     if session["is_admin"]:
+        if session["csrf_token"] != request.form["csrf_token"]:
+            abort(403)
         roomId = request.form["room-id"]
 
         #TODO: error handling
@@ -214,6 +230,8 @@ def reserveRoom():
 @app.route("/reserveRooms/makeReservation", methods=["POST"])
 def makeReservation():
     if session["username"]:
+        if session["csrf_token"] != request.form["csrf_token"]:
+            abort(403)
         reservationTimeId = request.form["reservationtime-id"]
         if queryManager.makeReservation(reservationTimeId):
             return redirect("/reserveRooms")
@@ -232,6 +250,8 @@ def reserveRoomInformation():
 @app.route("/reservedRoomsInformation/cancelReservation", methods=["POST"])
 def cancelReservation():
     if session["username"]:
+        if session["csrf_token"] != request.form["csrf_token"]:
+            abort(403)
         reservationid = request.form["reservation-id"]
         queryManager.cancelReservation(reservationid)
 
@@ -251,6 +271,8 @@ def borrowBooks():
 @app.route("/borrowBooks/borrow", methods=["POST"])
 def borrow():
     if session["username"]:
+        if session["csrf_token"] != request.form["csrf_token"]:
+            abort(403)
         bookId = request.form["book-id"]
         borrowDuration = 14 #in the form of days from this day
         #TODO: error handling
@@ -273,6 +295,8 @@ def borrowinformation():
 @app.route("/borrowinformation/returnBook", methods=["POST"])
 def returnBook():
     if session["username"]:
+        if session["csrf_token"] != request.form["csrf_token"]:
+            abort(403)
         bookId = request.form["book-id"]
         #TODO: error handling
         if queryManager.returnBook(bookId):
@@ -285,6 +309,8 @@ def returnBook():
 @app.route("/readBook", methods=["POST"])
 def readBook():
     if session["username"]:
+        if session["csrf_token"] != request.form["csrf_token"]:
+            abort(403)
         bookId = request.form["book-id"]
         bookData = queryManager.getBookReadingData(bookId)
         #TODO: error handling

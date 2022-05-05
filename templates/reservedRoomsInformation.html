@@ -15,6 +15,7 @@
       <th>{{item.end}}</th>
       <th><input type="submit" value="peru varaus"></th>
       <input type="hidden" name="reservation-id" value="{{item.id}}" />
+      <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
     </tr>
     </form>
     {%endfor%}
