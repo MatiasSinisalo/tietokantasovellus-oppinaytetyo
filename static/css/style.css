@@ -12,6 +12,33 @@ body{
     
 }
 
+.user-info{
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+    margin: 5px;
+}
+
+.nav-buttons{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    align-content: center;
+    flex-direction: row;
+}
+
+.nav-button{
+    padding: 2px;
+    margin: 3px;
+}
+
+
+
 .maingrid{
     display: grid;
     grid-template-columns: 100vw;
@@ -66,13 +93,13 @@ body{
 
 .nav-bar{
     grid-area: nav;
-    background-color: burlywood;
+    background-color: chocolate;
     display: flex;
     grid-area: nav;
     flex-direction: row;
-    align-items: center;
     flex-wrap: wrap;
-    justify-content: space-evenly;
+    justify-content: space-around;
+    align-items: stretch;
 
 }
 

@@ -15,16 +15,20 @@
   
 
 <div class="nav-bar">
-  <p>Olet kirjautunut nimellä {{ session.username }}</p>
+  <div class="user-info">
+    <p>Olet kirjautunut nimellä {{ session.username }}</p>
+    <a href="/logout">Kirjaudu ulos</a>
+  </div>
+  <div class="nav-buttons">
   {% if session.is_admin %}
 
-            <form action="/manageBooks">
+            <form class="nav-button" action="/manageBooks">
               <input type="submit" value="Hallitse Kirjoja">
             </form>
 
             <br>
 
-            <form action="/manageRooms">
+            <form class="nav-button" action="/manageRooms">
               <input type="submit" value="Hallitse Huoneita">
             </form>
 
@@ -32,27 +36,28 @@
 
       {% endif %}
       
-      <form action="/borrowBooks">
+      <form class="nav-button" action="/borrowBooks">
         <input type="submit" value="lainaa Kirjoja">
       </form>
 
       <br>
 
-      <form action="/borrowinformation">
+      <form class="nav-button" action="/borrowinformation">
         <input type="submit" value="Tarkastele lainaamiasi kirjoja">
       </form>
 
       <br>
 
-      <form action="/reserveRooms">
+      <form class="nav-button" action="/reserveRooms">
         <input type="submit" value="tee varaus työhuoneelle">
       </form>
 
       <br>
 
-      <form action="/reservedRoomsInformation">
+      <form class="nav-button" action="/reservedRoomsInformation">
         <input type="submit" value="tarkastele varaamiasi huoneita">
       </form>
+    </div>
 </div>
 
 <div class="content">{%block content%}{%endblock%}</div>
@@ -61,11 +66,11 @@
 
 </div>
 
-<div class="footer">
 
-    <a href="/logout">Kirjaudu ulos</a>
+
+    
   
-  </div>
+ 
 {% else %}
 
 <div class="login-grid">
