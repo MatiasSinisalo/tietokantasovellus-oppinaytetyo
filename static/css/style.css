@@ -1,4 +1,12 @@
 
+.startTime{
+    width: 4rem;
+}
+
+.endTime{
+    width: 4rem;
+}
+
 body{
     min-width: 100%;
     min-height: 100%;

@@ -43,18 +43,51 @@
 <table>
     <tr>
       <th>Nimi</th>
+      <th>Alkuaika</th>
+      <th>Loppuaika</th>
     </tr>
     {%for item in rooms%}
     <form action="/manageRooms/addReservation" method="POST">
     <tr>
       <th>{{item[1]}}</th>
+     
       <th>
-        <label for="startTime">alkuaika</label>
-        <input id ="startTime" type="text" name="startTime" > <br>
-        <label for="endTime">loppuaika</label>
-        <input id ="endTime" type="text" name="endTime" > <br>
-      
+        <table>
+          <tr>
+            <th>minuutti</th>
+            <th>tunti</th>
+            <th>päivä</th>
+            <th>kuukausi</th>
+            <th>vuosi</th>
+          </tr>
+          
+          <th><input class ="startTime" type="text" name="startMinute" > <br></th>
+          <th><input class ="startTime" type="text" name="startHour" > <br></th>
+          <th><input class ="startTime" type="text" name="startDay" > <br></th>
+          <th><input class ="startTime" type="text" name="startMonth" > <br></th>
+          <th><input class ="startTime" type="text" name="startYear" > <br></th>
+          
+        </table>
       </th>
+      <th>
+        <table>
+          <tr>
+            <th>minuutti</th>
+            <th>tunti</th>
+            <th>päivä</th>
+            <th>kuukausi</th>
+            <th>vuosi</th>
+          </tr>
+          
+          <th><input class ="endTime" type="text" name="endMinute">  <br></th>
+          <th><input class ="endTime" type="text" name="endHour">  <br></th>
+          <th><input class ="endTime" type="text" name="endDay">  <br></th>
+          <th><input class ="endTime" type="text" name="endMonth">  <br></th>
+          <th><input class ="endTime" type="text" name="endYear">  <br></th>
+          
+        </table>
+      </th>
+      
       <th><input type="submit" value="lisaa uusi varattava aika"></th>
       <input type="hidden" name="room-id" value="{{item[0]}}" />
       <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">

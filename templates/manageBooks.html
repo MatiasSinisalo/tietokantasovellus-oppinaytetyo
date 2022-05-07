@@ -1,10 +1,12 @@
 {%extends 'base.html'%}
-
+{%block headblock%}
+<script type="text/javascript" src="{{url_for('static', filename='javascript/book_addition_form_validation.js')}}"></script>
+{%endblock%}
 {%block content%}
 
 {%if session.is_admin%}
 <p>Lisaa Kirja</p>
-<form action="/manageBooks/addBook" enctype="multipart/form-data" method="POST">
+<form action="/manageBooks/addBook" enctype="multipart/form-data" method="POST" onsubmit="return validate_book_addition_form(this)">
   <label for="name">kirjan nimi</label><br>
   <input id ="name" type="text" name="name" ><br>
 

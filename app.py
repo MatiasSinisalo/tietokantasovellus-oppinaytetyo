@@ -116,9 +116,12 @@ def addBook():
         authorsString = request.form['authors']
         authorsList = authorsString.split(", ")
 
-        content = request.files['content']        
-        bookString = filemanager.ReturnUploadedFileContents(content, ALLOWED_EXTENSIONS, UPLOAD_FOLDER)
-        
+        content = request.files['content']
+        if len(content.filename) > 0:        
+            bookString = filemanager.ReturnUploadedFileContents(content, ALLOWED_EXTENSIONS, UPLOAD_FOLDER)
+        else:
+            session["message"] = "Kirjan tiedosto oli tyhja"
+            return redirect("/")
         #TODO: error handling
         if bookString:
             
@@ -179,8 +182,13 @@ def addReservation():
         if session["csrf_token"] != request.form["csrf_token"]:
             abort(403)
         roomId = request.form["room-id"]
-        startTime = request.form["startTime"]
-        endTime = request.form["endTime"]
+
+
+
+        startTime = f"{request.form['startMinute']}:{request.form['startHour']} {request.form['startDay']}-{request.form['startMonth']}-{request.form['startYear']}"
+
+        endTime = f"{request.form['endMinute']}:{request.form['endHour']} {request.form['endDay']}-{request.form['endMonth']}-{request.form['endYear']}"
+
 
 
         #TODO error handling

@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <head>
+  <!--help for creating flask blocks is from https://flask.palletsprojects.com/en/2.1.x/patterns/templateinheritance/-->
   <script type="text/javascript" src="{{url_for('static', filename='javascript/acount_form_validation.js')}}"></script>
   <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}"></style>
-
+  {%block headblock%}{%endblock%}
 </head>
 <body>
 {%if message != None%}
