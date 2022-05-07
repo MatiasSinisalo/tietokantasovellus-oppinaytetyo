@@ -195,7 +195,7 @@ def addReservation():
         if queryManager.addReservationTime(startTime, endTime, roomId):
              return redirect("/manageRooms/")
         else:
-            return redirect("/manageRooms/")
+            return redirect("/")
     else:
         return redirect("/")
 

@@ -205,10 +205,14 @@ class QueryManager:
     def addReservationTime(self, time_block_start, time_block_end, roomId):
         if time_block_start == '' or time_block_end == '' or roomId == '':
             return False
-        sql = "INSERT INTO meetingRoomReserveTimes (time_block_start, time_block_end, meeting_room_id) VALUES (TO_TIMESTAMP(:time_block_start, 'MI:HH24 DD-MM-YYYY'), TO_TIMESTAMP(:time_block_end, 'MI:HH24 DD-MM-YYYY'), :roomId)"
-        self.db.session.execute(sql, {"time_block_start":time_block_start, "time_block_end":time_block_end, "roomId":roomId})
-        self.db.session.commit()
-        return True
+        try:
+            sql = "INSERT INTO meetingRoomReserveTimes (time_block_start, time_block_end, meeting_room_id) VALUES (TO_TIMESTAMP(:time_block_start, 'MI:HH24 DD-MM-YYYY'), TO_TIMESTAMP(:time_block_end, 'MI:HH24 DD-MM-YYYY'), :roomId)"
+            self.db.session.execute(sql, {"time_block_start":time_block_start, "time_block_end":time_block_end, "roomId":roomId})
+            self.db.session.commit()
+            return True
+        except:
+            session["message"] = "Virhe lisättäessä aikaa tietokantaan"
+            return False
    
     
     def removeReservationTime(self, roomId):

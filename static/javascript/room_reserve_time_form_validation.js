@@ -1,5 +1,7 @@
 function validate_book_addition_form(form) {
    
+    minutePatter = "/0/"
+
     if (validateDateValues(form.startMinute, form.startHour, form.startDay, form.startMonth, form.startYear) == false){
          return false
     }
@@ -8,22 +10,13 @@ function validate_book_addition_form(form) {
         return false
    }
 
-   if (checkForStrings(form.startMinute, form.startHour, form.startDay, form.startMonth, form.startYear) == false)
-   {
-       return false
-   }
-
-   if (checkForStrings(form.endMinute, form.endHour, form.endDay, form.endMonth, form.endYear) == false)
-   {
-       return false
-   }
-
     return true;
 
   }
 
   function validateDateValues(minute, hour, day, month, year){
     //minute validation
+    minuteRegEx = "[]"
     if (minute.value.length < 1){
         alert("aloitus minuutin kuuluu olla muotoa: MM")
         return false;
@@ -79,7 +72,7 @@ function validate_book_addition_form(form) {
             return false;
       }
       
-      if (day.value > 24)
+      if (day.value > 31)
       {
   
           alert("paivan kuuluu olla <= 31")
@@ -134,26 +127,3 @@ function validate_book_addition_form(form) {
 
   }
 
-  function checkForStrings(minute, hour, day, month, year){
-      if (typeof minute.value == "string"){
-        alert("minuutissa ei saa olla kirjainta")
-        return false;
-      }
-      if (typeof hour.value == "string"){
-        alert("tunnissa ei saa olla kirjainta")
-        return false;
-      }
-      if (typeof day.value == "string"){
-        alert("päivässä ei saa olla kirjainta")
-        return false;
-      }
-      if ( typeof month.value == "string"){
-        alert("kuukaudessa ei saa olla kirjainta")
-        return false;
-      }
-      if (typeof year.value == "string"){
-        alert("vuodess ei saa olla kirjainta")
-        return false;
-      }
-      return true
-  }
