@@ -1,5 +1,7 @@
 {%extends 'base.html'%}
-
+{%block headblock%}
+<script type="text/javascript" src="{{url_for('static', filename='javascript/room_reserve_time_form_validation.js')}}"></script>
+{%endblock%}
 {%block content%}
 
 
@@ -47,7 +49,7 @@
       <th>Loppuaika</th>
     </tr>
     {%for item in rooms%}
-    <form action="/manageRooms/addReservation" method="POST">
+    <form action="/manageRooms/addReservation" method="POST" onsubmit="return validate_book_addition_form(this)">
     <tr>
       <th>{{item[1]}}</th>
      
