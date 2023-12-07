@@ -19,9 +19,9 @@ Ylläpitäjä:
     - Voi lisätä ja poistaa työtilalle varattavissa olevan ajan  
 
 -----------------------------
-# herokun testaus  
+# sovelluksen testaus  
 sovellus on saatavilla osoitteessa:  
-https://strawberry-shortcake-58972.herokuapp.com/  
+https://kirjastonhallintasovellus.onrender.com/ 
 
 
 -----------------------------
